@@ -1,0 +1,1102 @@
+options:
+  parameters:
+    author: ''
+    catch_exceptions: 'True'
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: ''
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: rm
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: rm
+    window_size: (1000,1000)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 8]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: D
+  id: variable
+  parameters:
+    comment: ''
+    value: symb_rate/4
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [448, 16.0]
+    rotation: 0
+    state: enabled
+- name: alpha
+  id: variable
+  parameters:
+    comment: ''
+    value: '0.25'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [304, 16.0]
+    rotation: 0
+    state: enabled
+- name: pam4
+  id: variable_constellation
+  parameters:
+    comment: ''
+    const_points: '[-3,-1,1,3]'
+    dims: '1'
+    normalization: digital.constellation.AMPLITUDE_NORMALIZATION
+    npwr: '1.0'
+    precision: '8'
+    rot_sym: '1'
+    soft_dec_lut: None
+    sym_map: '[0, 1, 2, 3]'
+    type: calcdist
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [656, 20.0]
+    rotation: 0
+    state: enabled
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: 2e6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [200, 12]
+    rotation: 0
+    state: enabled
+- name: sps
+  id: variable
+  parameters:
+    comment: ''
+    value: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [304, 96.0]
+    rotation: 0
+    state: enabled
+- name: symb_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: 500e3
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [200, 96.0]
+    rotation: 0
+    state: enabled
+- name: analog_quadrature_demod_cf_0
+  id: analog_quadrature_demod_cf
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    gain: samp_rate/(2*math.pi*D)
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [616, 408.0]
+    rotation: 0
+    state: enabled
+- name: analog_simple_squelch_cc_0
+  id: analog_simple_squelch_cc
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha: '1'
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    threshold: '-70'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [616, 320.0]
+    rotation: 0
+    state: enabled
+- name: blocks_multiply_const_vxx_1
+  id: blocks_multiply_const_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    const: '0.78'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [608, 632.0]
+    rotation: 0
+    state: enabled
+- name: blocks_repack_bits_bb_1_0
+  id: blocks_repack_bits_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    align_output: 'False'
+    comment: ''
+    endianness: gr.GR_LSB_FIRST
+    k: '2'
+    l: '8'
+    len_tag_key: '"packet_len"'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [552, 872.0]
+    rotation: 0
+    state: disabled
+- name: blocks_uchar_to_float_0
+  id: blocks_uchar_to_float
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [552, 968.0]
+    rotation: 0
+    state: disabled
+- name: blocks_uchar_to_float_0_0
+  id: blocks_uchar_to_float
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [824, 1072.0]
+    rotation: 0
+    state: disabled
+- name: digital_symbol_sync_xx_0
+  id: digital_symbol_sync_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    constellation: digital.constellation_bpsk().base()
+    damping: '1.0'
+    loop_bw: '0.1'
+    max_dev: '1.5'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    nfilters: '128'
+    osps: '1'
+    pfb_mf_taps: '[]'
+    resamp_type: digital.IR_MMSE_8TAP
+    sps: sps
+    ted_gain: '0.8'
+    ted_type: digital.TED_MUELLER_AND_MULLER
+    type: ff
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1040, 548.0]
+    rotation: 0
+    state: enabled
+- name: epy_block_0_0
+  id: epy_block
+  parameters:
+    _source_code: "import numpy as np\nfrom gnuradio import gr\n\nclass four_fsk_slicer(gr.sync_block):\n\
+      \    \"\"\"\n    4FSK Hard Slicer\n    Input: Float symbols (approx -3, -1,\
+      \ 1, 3)\n    Output: Bytes (0, 1, 2, 3 based on mapping)\n    \"\"\"\n    def\
+      \ __init__(self):\n        gr.sync_block.__init__(self,\n            name=\"\
+      4FSK Slicer\",\n            in_sig=[np.float32],\n            out_sig=[np.uint8])\n\
+      \n    def work(self, input_items, output_items):\n        in0 = input_items[0]\n\
+      \        out = output_items[0]\n\n        # \u77E2\u91CF\u5316\u64CD\u4F5C\u63D0\
+      \u9AD8\u6548\u7387\n        # \u5224\u51B3\u95E8\u9650\uFF1A-2, 0, 2\n\n   \
+      \     # \u903B\u8F91\uFF1A\n        # val < -2  -> -3 (Symbol 0, bits 00)\n\
+      \        # -2 < val < 0 -> -1 (Symbol 1, bits 01)\n        # 0 < val < 2  ->\
+      \ 1  (Symbol 3, bits 11 - Gray)\n        # val > 2   -> 3  (Symbol 2, bits 10\
+      \ - Gray)\n\n        # \u4F7F\u7528 np.select \u6216\u8005\u7B80\u5355\u7684\
+      \u6BD4\u8F83\n\n        cond_neg3 = in0 < -1.85\n        cond_neg1 = (in0 >=\
+      \ -1.85) & (in0 < 0.0)\n        cond_pos1 = (in0 >= 0.0) & (in0 < 1.85)\n  \
+      \      cond_pos3 = in0 >= 1.85\n\n        out[:] = (0 * cond_neg3 +\n      \
+      \            1 * cond_neg1 +\n                  2 * cond_pos1 +\n          \
+      \        3 * cond_pos3).astype(np.uint8)\n\n        return len(output_items[0])\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    _io_cache: '(''4FSK Slicer'', ''four_fsk_slicer'', [], [(''0'', ''float'', 1)],
+      [(''0'', ''byte'', 1)], ''\n4FSK Hard Slicer\nInput: Float symbols (approx -3,
+      -1, 1, 3)\nOutput: Bytes (0, 1, 2, 3 based on mapping)\n'', [])'
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [560, 808.0]
+    rotation: 0
+    state: disabled
+- name: epy_block_1
+  id: epy_block
+  parameters:
+    _source_code: "import numpy as np\nfrom gnuradio import gr\nimport pmt\nfrom scipy\
+      \ import signal\nimport struct\n\nclass fsk_burst_demod_rrc(gr.basic_block):\n\
+      \    def __init__(self, sps=4, alpha=0.25, ntaps=44, threshold=12.0, payload_bytes=14):\n\
+      \        gr.basic_block.__init__(self,\n            name=\"4-FSK RRC Correlation\
+      \ Demod\",\n            in_sig=[np.float32],\n            out_sig=[np.uint8])\n\
+      \n        self.sps = sps\n        self.threshold = threshold\n        self.payload_bytes\
+      \ = payload_bytes\n        self.preamble_bytes = 1\n\n\n\n        # \u9884\u8BA1\
+      \u7B97\u6838\n\n        self.kernel = np.array(\n                [-0.3573050820141748,\
+      \ 0.5660324802079747, 1.2540338399449016, 1.6295843398401122, 1.6540407856806771,\
+      \ 1.3361034273782317, 0.751107591189669, 0.05043177497731362, -0.5937277177999305,\
+      \ -0.9785924463822805, -1.0780863103973495, -0.9735427298716328, -0.8530721779041428,\
+      \ -0.8496851308974418, -1.0996978799392936, -1.6034189664941476, -2.2065817403116985,\
+      \ -2.8258390531562303, -3.2484240942060123, -3.380621099394902, -3.2539607537620547,\
+      \ -3.010055647627655, -2.8195794555849996, -2.7830997744361694, -2.9247430368311886,\
+      \ -3.0553742929915426, -3.1276277405435704, -3.1159436582249245, -3.0502972667543005,\
+      \ -2.965491326761916, -2.8480935627121218, -2.623313845849911, -2.1740644196075953,\
+      \ -1.4963902421714717, -0.6214243499251842, 0.2802205824933558, 0.959380227235302,\
+      \ 1.1783752469166406, 0.8126400837735933, -0.08596178463524357, -1.2822550094286638,\
+      \ -2.522246206339441, -3.490881105705776, -3.978374440835261], dtype=np.float32)\n\
+      \n        self.buffer = np.array([], dtype=np.float32)\n        self.state =\
+      \ \"SEARCH\"\n        self.samples_per_packet = (self.preamble_bytes + self.payload_bytes)\
+      \ * 4 * sps\n\n    def general_work(self, input_items, output_items):\n    \
+      \    in0 = input_items\n        out = output_items\n        self.buffer = np.append(self.buffer,\
+      \ in0)\n\n        produced = 0\n        while True:\n            if self.state\
+      \ == \"SEARCH\":\n                # \u9700\u8981\u8DB3\u591F\u7684\u957F\u5EA6\
+      \u8FDB\u884C\u4E92\u76F8\u5173\n                if len(self.buffer) < len(self.kernel)\
+      \ + self.samples_per_packet:\n                    break\n\n                #\
+      \ \u6ED1\u52A8\u76F8\u5173 (\u4EC5\u641C\u7D22\u7F13\u51B2\u533A\u8D77\u59CB\
+      \u7684\u4E00\u6BB5)\n                search_len = min(len(self.buffer), 512)\n\
+      \                corr = signal.correlate(self.buffer[:search_len], self.kernel,\
+      \ mode='valid')\n\n                peak_idx = np.argmax(corr)\n            \
+      \    if corr[peak_idx] > self.threshold:\n                    #print(\"valid\"\
+      )\n                    # \u5339\u914D\u6210\u529F\u3002\u5BF9\u4E8E 'valid'\
+      \ \u6A21\u5F0F\uFF0C\u5CF0\u503C\u7D22\u5F15 peak_idx\n                    #\
+      \ \u5BF9\u5E94\u7684\u6B63\u662F kernel \u5B8C\u5168\u5BF9\u9F50 buffer[peak_idx\
+      \ : peak_idx+len(kernel)] \u7684\u4F4D\u7F6E\n                    # \u6700\u4F73\
+      \u91C7\u6837\u70B9\u901A\u5E38\u5728 preamble \u7ED3\u675F\u540E\u7684\u7B2C\
+      \u4E00\u4E2A payload \u7B26\u53F7\u5904\n                    self.sample_ptr\
+      \ = peak_idx + len(self.kernel)\n                    self.state = \"EXTRACT\"\
+      \n                else:\n                    # \u672A\u627E\u5230\uFF0C\u4FEE\
+      \u526A\u7F13\u51B2\u533A\u9632\u6B62\u5185\u5B58\u6EA2\u51FA\n             \
+      \       self.buffer = self.buffer[search_len - len(self.kernel):]\n        \
+      \            break\n\n            elif self.state == \"EXTRACT\":\n        \
+      \        # \u68C0\u67E5\u5269\u4F59\u6837\u672C\u662F\u5426\u8DB3\u591F\u8986\
+      \u76D6 payload\n                payload_samples_needed = self.payload_bytes\
+      \ * 4 * self.sps\n                if len(self.buffer) < self.sample_ptr + payload_samples_needed:\n\
+      \                    break\n\n                # \u5F00\u59CB\u6BCF\u9694 SPS\
+      \ \u4E2A\u6837\u672C\u62BD\u53D6\u4E00\u4E2A\u70B9\uFF08\u62BD\u53D6\u5728\u540C\
+      \u6B65\u540E\u6267\u884C\uFF09\n                payload_stream = self.buffer[self.sample_ptr\
+      \ : self.sample_ptr + payload_samples_needed]\n                decision_points\
+      \ = payload_stream[::self.sps]\n\n                # \u89E3\u7801\u7B26\u53F7\
+      \u5E76\u7EC4\u5305\n                packet_bytes = []\n                for i\
+      \ in range(0, len(decision_points), 4):\n                    byte_val = 0\n\
+      \                    for j in range(4):\n                        v = decision_points[i+j]\n\
+      \                        # 4FSK \u5224\u51B3\u95E8\u9650 (\u5047\u8BBE\u5DF2\
+      \u7ECF\u5F52\u4E00\u5316\u5230 -3, -1, 1, 3)\n                        if v >\
+      \ 2.0: bits = 0b11 # +3\n                        elif v > 0: bits = 0b10 # +1\n\
+      \                        elif v > -2.0: bits = 0b01 # -1\n                 \
+      \       else: bits = 0b00 # -3\n                        byte_val = (byte_val\
+      \ << 2) | bits\n                        #byte_val = int(\"{:08b}\".format(byte_val)[::-1],2)\n\
+      \                    packet_bytes.append(byte_val)\n\n                # \u622A\
+      \u65AD\u5230\u8BF7\u6C42\u7684\u957F\u5EA6\u5E76\u6DFB\u52A0 Tag\n         \
+      \       final_payload = packet_bytes[:self.payload_bytes]\n\n              \
+      \  # \u6253\u6807\uFF1A\u5728\u5F53\u524D\u8F93\u51FA\u6D41\u7684\u8D77\u59CB\
+      \u4F4D\u7F6E\u6DFB\u52A0 packet_len \u6807\u7B7E\n                tag_index\
+      \ = self.nitems_written(0) + produced\n                self.add_item_tag(0,\
+      \ tag_index, pmt.intern(\"packet_len\"), pmt.from_long(self.payload_bytes))\n\
+      \n                # \u8F93\u51FA\n                out[produced : produced +\
+      \ len(final_payload)] = final_payload\n                produced += len(final_payload)\n\
+      \n                # \u91CD\u7F6E\u72B6\u6001\u5E76\u6E05\u7406 buffer\n    \
+      \            self.buffer = self.buffer[self.sample_ptr + payload_samples_needed:]\n\
+      \                self.state = \"SEARCH\"\n\n        self.consume(0, len(in0))\n\
+      \        return produced\n"
+    affinity: ''
+    alias: ''
+    alpha: '0.25'
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    ntaps: '44'
+    payload_bytes: '11'
+    sps: '4'
+    threshold: '100'
+  states:
+    _io_cache: ('4-FSK RRC Correlation Demod', 'fsk_burst_demod_rrc', [('sps', '4'),
+      ('alpha', '0.25'), ('ntaps', '44'), ('threshold', '12.0'), ('payload_bytes',
+      '14')], [('0', 'float', 1)], [('0', 'byte', 1)], '', ['payload_bytes', 'sps',
+      'threshold'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [816, 920.0]
+    rotation: 0
+    state: disabled
+- name: epy_block_1_0
+  id: epy_block
+  parameters:
+    _source_code: "import numpy as np\nfrom gnuradio import gr\nfrom scipy import\
+      \ signal\n\nclass fsk_corr_scorer(gr.sync_block):\n    def __init__(self):\n\
+      \        gr.sync_block.__init__(self,\n            name=\"FSK Correlation Scorer\"\
+      ,\n            in_sig=[np.float32],\n            out_sig=[np.float32])\n\n \
+      \       # \u9884\u8BA1\u7B97\u6838 (\u4FDD\u6301\u539F\u6709\u6570\u503C)\n\
+      \        self.kernel = np.array(\n                [-0.3573050820141748, 0.5660324802079747,\
+      \ 1.2540338399449016, 1.6295843398401122, 1.6540407856806771, 1.3361034273782317,\
+      \ 0.751107591189669, 0.05043177497731362, -0.5937277177999305, -0.9785924463822805,\
+      \ -1.0780863103973495, -0.9735427298716328, -0.8530721779041428, -0.8496851308974418,\
+      \ -1.0996978799392936, -1.6034189664941476, -2.2065817403116985, -2.8258390531562303,\
+      \ -3.2484240942060123, -3.380621099394902, -3.2539607537620547, -3.010055647627655,\
+      \ -2.8195794555849996, -2.7830997744361694, -2.9247430368311886, -3.0553742929915426,\
+      \ -3.1276277405435704, -3.1159436582249245, -3.0502972667543005, -2.965491326761916,\
+      \ -2.8480935627121218, -2.623313845849911, -2.1740644196075953, -1.4963902421714717,\
+      \ -0.6214243499251842, 0.2802205824933558, 0.959380227235302, 1.1783752469166406,\
+      \ 0.8126400837735933, -0.08596178463524357, -1.2822550094286638, -2.522246206339441,\
+      \ -3.490881105705776, -3.978374440835261], dtype=np.float32)\n\n        # \u8BBE\
+      \u7F6E history \u957F\u5EA6\uFF0C\u786E\u4FDD\u6BCF\u6B21 work \u90FD\u80FD\u8BBF\
+      \u95EE\u5230\u8DB3\u591F\u7684\u65E7\u6837\u672C\u8FDB\u884C\u4E92\u76F8\u5173\
+      \n        self.set_history(len(self.kernel))\n\n    def work(self, input_items,\
+      \ output_items):\n        in0 = input_items[0]\n        out = output_items[0]\n\
+      \n        # \u5728 sync_block \u4E2D\uFF0C\u5982\u679C\u8BBE\u7F6E\u4E86 history\
+      \ \u4E3A K\uFF0C\n        # \u5219 len(in0) = noutput_items + K - 1\n      \
+      \  # \u6211\u4EEC\u5BF9\u6574\u6BB5 buffer \u8FDB\u884C valid \u6A21\u5F0F\u7684\
+      \u76F8\u5173\u8FD0\u7B97\uFF0C\u5F97\u5230\u957F\u5EA6\u4E3A noutput_items \u7684\
+      \u7ED3\u679C\n        # \u4F7F\u7528 numpy.correlate \u6216 scipy.signal.correlate\
+      \ \u5747\u53EF\n        # \u6CE8\u610F\uFF1A\u4E3A\u4E86\u6027\u80FD\uFF0C\u8FD9\
+      \u91CC\u4F7F\u7528 numpy \u7684 correlate\n\n        corr_result = signal.correlate(in0,\
+      \ self.kernel, mode='valid')\n\n        # \u586B\u5145\u5230\u8F93\u51FA\n \
+      \       n_out = len(corr_result)\n        out[:n_out] = corr_result\n\n    \
+      \    return n_out\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    _io_cache: ('FSK Correlation Scorer', 'fsk_corr_scorer', [], [('0', 'float', 1)],
+      [('0', 'float', 1)], '', [])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1040, 896.0]
+    rotation: 0
+    state: enabled
+- name: epy_block_1_0_0
+  id: epy_block
+  parameters:
+    _source_code: "import numpy as np\nfrom gnuradio import gr\nimport pmt\nfrom scipy\
+      \ import signal\n\nclass fsk_burst_tagger(gr.sync_block):\n    def __init__(self,\
+      \ threshold=12.0):\n        gr.sync_block.__init__(self,\n            name=\"\
+      FSK Burst Tagger\",\n            in_sig=[np.float32],\n            out_sig=[np.float32])\
+      \ # \u4FEE\u6539\u4E3A\u6D6E\u70B9\u8F93\u51FA\uFF0C\u4FDD\u6301\u4FE1\u53F7\
+      \u6D41\u4E0D\u53D8\n\n        self.threshold = threshold\n        # \u9884\u8BA1\
+      \u7B97\u6838 (\u4FDD\u6301\u539F\u6709\u6570\u503C)\n        self.kernel = np.array(\n\
+      \                [-0.3573050820141748, 0.5660324802079747, 1.2540338399449016,\
+      \ 1.6295843398401122, 1.6540407856806771, 1.3361034273782317, 0.751107591189669,\
+      \ 0.05043177497731362, -0.5937277177999305, -0.9785924463822805, -1.0780863103973495,\
+      \ -0.9735427298716328, -0.8530721779041428, -0.8496851308974418, -1.0996978799392936,\
+      \ -1.6034189664941476, -2.2065817403116985, -2.8258390531562303, -3.2484240942060123,\
+      \ -3.380621099394902, -3.2539607537620547, -3.010055647627655, -2.8195794555849996,\
+      \ -2.7830997744361694, -2.9247430368311886, -3.0553742929915426, -3.1276277405435704,\
+      \ -3.1159436582249245, -3.0502972667543005, -2.965491326761916, -2.8480935627121218,\
+      \ -2.623313845849911, -2.1740644196075953, -1.4963902421714717, -0.6214243499251842,\
+      \ 0.2802205824933558, 0.959380227235302, 1.1783752469166406, 0.8126400837735933,\
+      \ -0.08596178463524357, -1.2822550094286638, -2.522246206339441, -3.490881105705776,\
+      \ -3.978374440835261], dtype=np.float32)\n\n        self.buffer = np.array([],\
+      \ dtype=np.float32)\n        self.skip_count = 0 # \u7528\u4E8E\u9632\u6B62\u5728\
+      \u540C\u4E00\u4E2A\u5CF0\u503C\u9644\u8FD1\u91CD\u590D\u6253\u6807\n\n    def\
+      \ work(self, input_items, output_items):\n        in0 = input_items[0]\n   \
+      \     out = output_items[0]\n\n        # \u5C06\u65B0\u6570\u636E\u5B58\u5165\
+      \u7F13\u51B2\u533A\n        self.buffer = np.append(self.buffer, in0)\n\n  \
+      \      # \u5982\u679C\u7F13\u51B2\u533A\u592A\u77ED\uFF0C\u65E0\u6CD5\u8FDB\u884C\
+      \u76F8\u5173\u8FD0\u7B97\uFF0C\u5219\u76F4\u63A5\u6D88\u8017\u5E76\u8FD4\u56DE\
+      \n        if len(self.buffer) < len(self.kernel):\n            self.consume(0,\
+      \ len(in0))\n            return 0\n\n        # \u6267\u884C\u4E92\u76F8\u5173\
+      \n        # \u6211\u4EEC\u53EA\u5BF9\u65B0\u52A0\u5165\u7684\u6570\u636E\u53CA\
+      \u5176\u524D\u7F00\u8FDB\u884C\u76F8\u5173\u8FD0\u7B97\n        corr = signal.correlate(self.buffer,\
+      \ self.kernel, mode='valid')\n\n        # \u5BFB\u627E\u8D85\u8FC7\u9608\u503C\
+      \u7684\u5CF0\u503C\n        for i in range(len(corr)):\n            if corr[i]\
+      \ > self.threshold and self.skip_count == 0:\n                # \u8BA1\u7B97\
+      \u6807\u7B7E\u5728\u5168\u5C40\u6D41\u4E2D\u7684\u4F4D\u7F6E\n             \
+      \   # nitems_written(0) \u662F\u5DF2\u8F93\u51FA\u7684\u6837\u672C\u6570\n \
+      \               # i \u662F\u5728\u5F53\u524D buffer \u4E2D\u7684\u504F\u79FB\
+      \n                tag_index = self.nitems_written(0) + i\n\n               \
+      \ # \u6DFB\u52A0 Tag\n                self.add_item_tag(0, tag_index, pmt.intern(\"\
+      burst_detected\"), pmt.PMT_T)\n\n                # \u8BBE\u7F6E\u8DF3\u8FC7\u8BA1\
+      \u6570\uFF0C\u9632\u6B62\u5BF9\u540C\u4E00\u4E2A preamble \u7684\u591A\u4E2A\
+      \u91C7\u6837\u70B9\u91CD\u590D\u89E6\u53D1 (\u901A\u5E38\u8BBE\u4E3A\u6838\u957F\
+      \u5EA6)\n                self.skip_count = len(self.kernel)\n\n            if\
+      \ self.skip_count > 0:\n                self.skip_count -= 1\n\n        # \u5C06\
+      \u8F93\u5165\u76F4\u63A5\u900F\u4F20\u5230\u8F93\u51FA\n        n_output = min(len(in0),\
+      \ len(out))\n        out[:n_output] = in0[:n_output]\n\n        # \u8FD9\u91CC\
+      \u7684 buffer \u7BA1\u7406\uFF1A\u4FDD\u7559\u6700\u540E kernel_len \u4E2A\u6837\
+      \u672C\uFF0C\u4EE5\u4FBF\u4E0B\u6B21\u641C\u7D22\u80FD\u8DE8\u8D8A\u8FB9\u754C\
+      \n        self.buffer = self.buffer[n_output:]\n\n        self.consume(0, n_output)\n\
+      \        return n_output\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    threshold: '175'
+  states:
+    _io_cache: ('FSK Burst Tagger', 'fsk_burst_tagger', [('threshold', '12.0')], [('0',
+      'float', 1)], [('0', 'float', 1)], '', ['threshold'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1072, 832.0]
+    rotation: 0
+    state: enabled
+- name: iio_pluto_source_0
+  id: iio_pluto_source
+  parameters:
+    affinity: ''
+    alias: ''
+    bandwidth: '5000000'
+    bbdc: 'True'
+    buffer_size: '32768'
+    comment: ''
+    filter: ''
+    filter_source: '''Auto'''
+    fpass: '0'
+    frequency: '433000000'
+    fstop: '0'
+    gain1: '''manual'''
+    len_tag_key: packet_len
+    manual_gain1: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    quadrature: 'True'
+    rfdc: 'True'
+    samplerate: '2000000'
+    type: fc32
+    uri: '"192.168.3.1"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [104, 220.0]
+    rotation: 0
+    state: enabled
+- name: qtgui_freq_sink_x_0
+  id: qtgui_freq_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    average: '1.0'
+    axislabels: 'True'
+    bw: samp_rate
+    color1: '"blue"'
+    color10: '"dark blue"'
+    color2: '"red"'
+    color3: '"green"'
+    color4: '"black"'
+    color5: '"cyan"'
+    color6: '"magenta"'
+    color7: '"yellow"'
+    color8: '"dark red"'
+    color9: '"dark green"'
+    comment: ''
+    ctrlpanel: 'False'
+    fc: '0'
+    fftsize: '1024'
+    freqhalf: 'True'
+    grid: 'False'
+    gui_hint: ''
+    label: Relative Gain
+    label1: ''
+    label10: ''''''
+    label2: ''''''
+    label3: ''''''
+    label4: ''''''
+    label5: ''''''
+    label6: ''''''
+    label7: ''''''
+    label8: ''''''
+    label9: ''''''
+    legend: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: '"RF"'
+    nconnections: '1'
+    norm_window: 'False'
+    showports: 'False'
+    tr_chan: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_tag: '""'
+    type: complex
+    units: dB
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    wintype: window.WIN_BLACKMAN_hARRIS
+    ymax: '10'
+    ymin: '-140'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [608, 200.0]
+    rotation: 0
+    state: enabled
+- name: qtgui_number_sink_0
+  id: qtgui_number_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    autoscale: 'False'
+    avg: '0'
+    color1: ("black", "black")
+    color10: ("black", "black")
+    color2: ("black", "black")
+    color3: ("black", "black")
+    color4: ("black", "black")
+    color5: ("black", "black")
+    color6: ("black", "black")
+    color7: ("black", "black")
+    color8: ("black", "black")
+    color9: ("black", "black")
+    comment: ''
+    factor1: '1'
+    factor10: '1'
+    factor2: '1'
+    factor3: '1'
+    factor4: '1'
+    factor5: '1'
+    factor6: '1'
+    factor7: '1'
+    factor8: '1'
+    factor9: '1'
+    graph_type: qtgui.NUM_GRAPH_HORIZ
+    gui_hint: ''
+    label1: ''
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    max: '1'
+    min: '-1'
+    name: '"BER"'
+    nconnections: '1'
+    type: float
+    unit1: ''
+    unit10: ''
+    unit2: ''
+    unit3: ''
+    unit4: ''
+    unit5: ''
+    unit6: ''
+    unit7: ''
+    unit8: ''
+    unit9: ''
+    update_time: '0.10'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2128, 1520.0]
+    rotation: 0
+    state: disabled
+- name: qtgui_time_sink_x_2
+  id: qtgui_time_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    axislabels: 'True'
+    color1: blue
+    color10: dark blue
+    color2: red
+    color3: green
+    color4: black
+    color5: cyan
+    color6: magenta
+    color7: yellow
+    color8: dark red
+    color9: dark green
+    comment: ''
+    ctrlpanel: 'False'
+    entags: 'True'
+    grid: 'True'
+    gui_hint: ''
+    label1: Signal 1
+    label10: Signal 10
+    label2: Signal 2
+    label3: Signal 3
+    label4: Signal 4
+    label5: Signal 5
+    label6: Signal 6
+    label7: Signal 7
+    label8: Signal 8
+    label9: Signal 9
+    legend: 'True'
+    marker1: '-1'
+    marker10: '-1'
+    marker2: '-1'
+    marker3: '-1'
+    marker4: '-1'
+    marker5: '-1'
+    marker6: '-1'
+    marker7: '-1'
+    marker8: '-1'
+    marker9: '-1'
+    name: '""'
+    nconnections: '1'
+    size: '128'
+    srate: samp_rate
+    stemplot: 'False'
+    style1: '1'
+    style10: '1'
+    style2: '1'
+    style3: '1'
+    style4: '1'
+    style5: '1'
+    style6: '1'
+    style7: '1'
+    style8: '1'
+    style9: '1'
+    tr_chan: '0'
+    tr_delay: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_NORM
+    tr_slope: qtgui.TRIG_SLOPE_POS
+    tr_tag: '""'
+    type: float
+    update_time: '3'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    ylabel: Amplitude
+    ymax: '5'
+    ymin: '-0'
+    yunit: '""'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [544, 1048.0]
+    rotation: 0
+    state: disabled
+- name: qtgui_time_sink_x_2_0
+  id: qtgui_time_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    axislabels: 'True'
+    color1: blue
+    color10: dark blue
+    color2: red
+    color3: green
+    color4: black
+    color5: cyan
+    color6: magenta
+    color7: yellow
+    color8: dark red
+    color9: dark green
+    comment: ''
+    ctrlpanel: 'False'
+    entags: 'True'
+    grid: 'True'
+    gui_hint: ''
+    label1: Signal 1
+    label10: Signal 10
+    label2: Signal 2
+    label3: Signal 3
+    label4: Signal 4
+    label5: Signal 5
+    label6: Signal 6
+    label7: Signal 7
+    label8: Signal 8
+    label9: Signal 9
+    legend: 'True'
+    marker1: '-1'
+    marker10: '-1'
+    marker2: '-1'
+    marker3: '-1'
+    marker4: '-1'
+    marker5: '-1'
+    marker6: '-1'
+    marker7: '-1'
+    marker8: '-1'
+    marker9: '-1'
+    name: '"Corr_tag"'
+    nconnections: '2'
+    size: '512'
+    srate: samp_rate
+    stemplot: 'False'
+    style1: '1'
+    style10: '1'
+    style2: '1'
+    style3: '1'
+    style4: '1'
+    style5: '1'
+    style6: '1'
+    style7: '1'
+    style8: '1'
+    style9: '1'
+    tr_chan: '0'
+    tr_delay: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_NORM
+    tr_slope: qtgui.TRIG_SLOPE_POS
+    tr_tag: '""'
+    type: float
+    update_time: '2'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    ylabel: Amplitude
+    ymax: '5'
+    ymin: '-5'
+    yunit: '""'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1272, 824.0]
+    rotation: 0
+    state: enabled
+- name: qtgui_time_sink_x_2_0_1
+  id: qtgui_time_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    axislabels: 'True'
+    color1: blue
+    color10: dark blue
+    color2: red
+    color3: green
+    color4: black
+    color5: cyan
+    color6: magenta
+    color7: yellow
+    color8: dark red
+    color9: dark green
+    comment: ''
+    ctrlpanel: 'False'
+    entags: 'True'
+    grid: 'True'
+    gui_hint: ''
+    label1: Signal 1
+    label10: Signal 10
+    label2: Signal 2
+    label3: Signal 3
+    label4: Signal 4
+    label5: Signal 5
+    label6: Signal 6
+    label7: Signal 7
+    label8: Signal 8
+    label9: Signal 9
+    legend: 'True'
+    marker1: '-1'
+    marker10: '-1'
+    marker2: '-1'
+    marker3: '-1'
+    marker4: '-1'
+    marker5: '-1'
+    marker6: '-1'
+    marker7: '-1'
+    marker8: '-1'
+    marker9: '-1'
+    name: '"Baseband"'
+    nconnections: '1'
+    size: '512'
+    srate: samp_rate
+    stemplot: 'False'
+    style1: '1'
+    style10: '1'
+    style2: '1'
+    style3: '1'
+    style4: '1'
+    style5: '1'
+    style6: '1'
+    style7: '1'
+    style8: '1'
+    style9: '1'
+    tr_chan: '0'
+    tr_delay: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_NORM
+    tr_slope: qtgui.TRIG_SLOPE_POS
+    tr_tag: '""'
+    type: float
+    update_time: '2'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    ylabel: Amplitude
+    ymax: '5'
+    ymin: '-5'
+    yunit: '""'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [896, 432.0]
+    rotation: 0
+    state: enabled
+- name: qtgui_time_sink_x_2_0_2
+  id: qtgui_time_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    axislabels: 'True'
+    color1: blue
+    color10: dark blue
+    color2: red
+    color3: green
+    color4: black
+    color5: cyan
+    color6: magenta
+    color7: yellow
+    color8: dark red
+    color9: dark green
+    comment: ''
+    ctrlpanel: 'False'
+    entags: 'True'
+    grid: 'True'
+    gui_hint: ''
+    label1: Symb
+    label10: Signal 10
+    label2: error
+    label3: Signal 3
+    label4: Signal 4
+    label5: Signal 5
+    label6: Signal 6
+    label7: Signal 7
+    label8: Signal 8
+    label9: Signal 9
+    legend: 'True'
+    marker1: '-1'
+    marker10: '-1'
+    marker2: '-1'
+    marker3: '-1'
+    marker4: '-1'
+    marker5: '-1'
+    marker6: '-1'
+    marker7: '-1'
+    marker8: '-1'
+    marker9: '-1'
+    name: '"CR_out"'
+    nconnections: '2'
+    size: '512'
+    srate: samp_rate
+    stemplot: 'False'
+    style1: '1'
+    style10: '1'
+    style2: '1'
+    style3: '1'
+    style4: '1'
+    style5: '1'
+    style6: '1'
+    style7: '1'
+    style8: '1'
+    style9: '1'
+    tr_chan: '0'
+    tr_delay: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_NORM
+    tr_slope: qtgui.TRIG_SLOPE_POS
+    tr_tag: '""'
+    type: float
+    update_time: '2'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    ylabel: Amplitude
+    ymax: '5'
+    ymin: '-5'
+    yunit: '""'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1384, 552.0]
+    rotation: 0
+    state: enabled
+- name: root_raised_cosine_filter_0_0
+  id: root_raised_cosine_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha: alpha
+    comment: ''
+    decim: '1'
+    gain: '1'
+    interp: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    ntaps: 11*sps
+    samp_rate: samp_rate
+    sym_rate: symb_rate
+    type: fir_filter_fff
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [600, 472.0]
+    rotation: 0
+    state: enabled
+
+connections:
+- [analog_quadrature_demod_cf_0, '0', root_raised_cosine_filter_0_0, '0']
+- [analog_simple_squelch_cc_0, '0', analog_quadrature_demod_cf_0, '0']
+- [blocks_multiply_const_vxx_1, '0', digital_symbol_sync_xx_0, '0']
+- [blocks_multiply_const_vxx_1, '0', epy_block_0_0, '0']
+- [blocks_multiply_const_vxx_1, '0', epy_block_1, '0']
+- [blocks_multiply_const_vxx_1, '0', epy_block_1_0, '0']
+- [blocks_multiply_const_vxx_1, '0', epy_block_1_0_0, '0']
+- [blocks_multiply_const_vxx_1, '0', qtgui_time_sink_x_2_0_1, '0']
+- [blocks_repack_bits_bb_1_0, '0', blocks_uchar_to_float_0, '0']
+- [blocks_uchar_to_float_0, '0', qtgui_time_sink_x_2, '0']
+- [blocks_uchar_to_float_0_0, '0', qtgui_time_sink_x_2_0, '0']
+- [digital_symbol_sync_xx_0, '0', qtgui_time_sink_x_2_0_2, '0']
+- [digital_symbol_sync_xx_0, '1', qtgui_time_sink_x_2_0_2, '1']
+- [epy_block_0_0, '0', blocks_repack_bits_bb_1_0, '0']
+- [epy_block_1, '0', blocks_uchar_to_float_0_0, '0']
+- [epy_block_1_0, '0', qtgui_time_sink_x_2_0, '1']
+- [epy_block_1_0_0, '0', qtgui_time_sink_x_2_0, '0']
+- [iio_pluto_source_0, '0', analog_simple_squelch_cc_0, '0']
+- [iio_pluto_source_0, '0', qtgui_freq_sink_x_0, '0']
+- [root_raised_cosine_filter_0_0, '0', blocks_multiply_const_vxx_1, '0']
+
+metadata:
+  file_format: 1
+  grc_version: 3.10.12.0
