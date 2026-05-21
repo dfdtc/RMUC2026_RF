@@ -81,36 +81,39 @@ blocks:
 - name: epy_block_0
   id: epy_block
   parameters:
-    _source_code: "# original author: SCNU-PIONEER \n\nimport numpy as np\nfrom gnuradio\
-      \ import gr\nimport crc\nimport time\nimport random\n\n\n# --- Official CRC8\
-      \ (poly=0x31) init & table ---\nrm_crc8 = crc.Configuration(8,0x31,0xff,0,1,1)\n\
-      rm_crc16 = crc.Configuration(16,0x1021,0xffff,0,1,1)\nheader_crc_calc = crc.Calculator(rm_crc8,True)\n\
-      frame_crc_calc = crc.Calculator(rm_crc16,True)\n\n\n# --- Official CRC16 table\
-      \ & init (little-endian output) ---\nCRC16_INIT = 0xFFFF\n\ndef _crc8(data):\n\
-      \n    return header_crc_calc.checksum(data) & 0xFF\n\n\ndef _crc16(data):\n\n\
-      \    return frame_crc_calc.checksum(data) & 0xFFFF\n\n\nCMD_OPTIONS = {\n  \
-      \  # name: (cmd_id, data_length)\n    \"enemy_pos\": (0x0A01, 24),\n    \"enemy_hp\"\
-      : (0x0A02, 12),\n    \"enemy_ammo\": (0x0A03, 10),\n    \"buff_state\": (0x0A04,\
-      \ 8),\n    \"gains\": (0x0A05, 36),\n    \"jamming\": (0x0A06, 6),\n}\n\n\n\n\
-      # --- \u534F\u8BAE\u5B57\u6BB5\u7ED3\u6784\u5B9A\u4E49\uFF08\u4E0E radar.yaml\
-      \ \u4FDD\u6301\u540C\u6B65\uFF09 ---\n_PROTO_FIELDS = {\n    \"enemy_pos\":\
-      \ [\n        (\"hero_x\", 2, \"uint16\"), (\"hero_y\", 2, \"uint16\"),\n   \
-      \     (\"engineer_x\", 2, \"uint16\"), (\"engineer_y\", 2, \"uint16\"),\n  \
-      \      (\"infantry_3_x\", 2, \"uint16\"), (\"infantry_3_y\", 2, \"uint16\"),\n\
-      \        (\"infantry_4_x\", 2, \"uint16\"), (\"infantry_4_y\", 2, \"uint16\"\
-      ),\n        (\"aerial_x\", 2, \"uint16\"), (\"aerial_y\", 2, \"uint16\"),\n\
-      \        (\"sentry_x\", 2, \"uint16\"), (\"sentry_y\", 2, \"uint16\"),\n   \
-      \ ],\n    \"enemy_hp\": [\n        (\"hero_hp\", 2, \"uint16\"), (\"engineer_hp\"\
-      , 2, \"uint16\"),\n        (\"infantry_3_hp\", 2, \"uint16\"), (\"infantry_4_hp\"\
-      , 2, \"uint16\"),\n        (\"reserved\", 2, \"uint16\"), (\"sentry_hp\", 2,\
-      \ \"uint16\"),\n    ],\n    \"enemy_ammo\": [\n        (\"hero_ammo\", 2, \"\
-      uint16\"), (\"infantry_3_ammo\", 2, \"uint16\"),\n        (\"infantry_4_ammo\"\
-      , 2, \"uint16\"), (\"aerial_ammo\", 2, \"uint16\"),\n        (\"sentry_ammo\"\
-      , 2, \"uint16\"),\n    ],\n    \"buff_state\": [\n        (\"remaining_gold\"\
-      , 2, \"uint16\"), (\"total_gold\", 2, \"uint16\"),\n        (\"macro_bits\"\
-      , 4, \"uint32\"),  # 4\u5B57\u8282\u4F4D\u57DF\uFF0C\u5EFA\u8BAE\u7528int\u4F20\
-      \u5165\n    ],\n    \"gains\": [\n        (\"hero_health_regen\", 1, \"uint8\"\
-      ), (\"hero_cooling_boost\", 2, \"uint16\"),\n        (\"hero_defense_boost\"\
+    _source_code: "# This work is based on an unlicensed open source project from:\
+      \ SCNU-PIONEER\n# From repositorie: https://github.com/SCNU-PIONEER/PinyRadio\n\
+      # All copyright and credit belongs to the original author\n# The code is used\
+      \ here for educational and research purposes only\n# Keep this notice when you\
+      \ use or modify the code\nimport numpy as np\nfrom gnuradio import gr\nimport\
+      \ crc\nimport time\nimport random\n\n\n# --- Official CRC8 (poly=0x31) init\
+      \ & table ---\nrm_crc8 = crc.Configuration(8,0x31,0xff,0,1,1)\nrm_crc16 = crc.Configuration(16,0x1021,0xffff,0,1,1)\n\
+      header_crc_calc = crc.Calculator(rm_crc8,True)\nframe_crc_calc = crc.Calculator(rm_crc16,True)\n\
+      \n\n# --- Official CRC16 table & init (little-endian output) ---\nCRC16_INIT\
+      \ = 0xFFFF\n\ndef _crc8(data):\n\n    return header_crc_calc.checksum(data)\
+      \ & 0xFF\n\n\ndef _crc16(data):\n\n    return frame_crc_calc.checksum(data)\
+      \ & 0xFFFF\n\n\nCMD_OPTIONS = {\n    # name: (cmd_id, data_length)\n    \"enemy_pos\"\
+      : (0x0A01, 24),\n    \"enemy_hp\": (0x0A02, 12),\n    \"enemy_ammo\": (0x0A03,\
+      \ 10),\n    \"buff_state\": (0x0A04, 8),\n    \"gains\": (0x0A05, 36),\n   \
+      \ \"jamming\": (0x0A06, 6),\n}\n\n\n\n# --- \u534F\u8BAE\u5B57\u6BB5\u7ED3\u6784\
+      \u5B9A\u4E49\uFF08\u4E0E radar.yaml \u4FDD\u6301\u540C\u6B65\uFF09 ---\n_PROTO_FIELDS\
+      \ = {\n    \"enemy_pos\": [\n        (\"hero_x\", 2, \"uint16\"), (\"hero_y\"\
+      , 2, \"uint16\"),\n        (\"engineer_x\", 2, \"uint16\"), (\"engineer_y\"\
+      , 2, \"uint16\"),\n        (\"infantry_3_x\", 2, \"uint16\"), (\"infantry_3_y\"\
+      , 2, \"uint16\"),\n        (\"infantry_4_x\", 2, \"uint16\"), (\"infantry_4_y\"\
+      , 2, \"uint16\"),\n        (\"aerial_x\", 2, \"uint16\"), (\"aerial_y\", 2,\
+      \ \"uint16\"),\n        (\"sentry_x\", 2, \"uint16\"), (\"sentry_y\", 2, \"\
+      uint16\"),\n    ],\n    \"enemy_hp\": [\n        (\"hero_hp\", 2, \"uint16\"\
+      ), (\"engineer_hp\", 2, \"uint16\"),\n        (\"infantry_3_hp\", 2, \"uint16\"\
+      ), (\"infantry_4_hp\", 2, \"uint16\"),\n        (\"reserved\", 2, \"uint16\"\
+      ), (\"sentry_hp\", 2, \"uint16\"),\n    ],\n    \"enemy_ammo\": [\n        (\"\
+      hero_ammo\", 2, \"uint16\"), (\"infantry_3_ammo\", 2, \"uint16\"),\n       \
+      \ (\"infantry_4_ammo\", 2, \"uint16\"), (\"aerial_ammo\", 2, \"uint16\"),\n\
+      \        (\"sentry_ammo\", 2, \"uint16\"),\n    ],\n    \"buff_state\": [\n\
+      \        (\"remaining_gold\", 2, \"uint16\"), (\"total_gold\", 2, \"uint16\"\
+      ),\n        (\"macro_bits\", 4, \"uint32\"),  # 4\u5B57\u8282\u4F4D\u57DF\uFF0C\
+      \u5EFA\u8BAE\u7528int\u4F20\u5165\n    ],\n    \"gains\": [\n        (\"hero_health_regen\"\
+      , 1, \"uint8\"), (\"hero_cooling_boost\", 2, \"uint16\"),\n        (\"hero_defense_boost\"\
       , 1, \"uint8\"), (\"hero_defense_debuff\", 1, \"uint8\"),\n        (\"hero_attack_boost\"\
       , 2, \"uint16\"), (\"engineer_health_regen\", 1, \"uint8\"),\n        (\"engineer_cooling_boost\"\
       , 2, \"uint16\"), (\"engineer_defense_boost\", 1, \"uint8\"),\n        (\"engineer_defense_debuff\"\
