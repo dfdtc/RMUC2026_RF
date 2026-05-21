@@ -1,3 +1,7 @@
+# This is an unlicensed open source project from: SCNU-PIONEER
+# From repositorie: https://github.com/SCNU-PIONEER/PinyRadio
+# All copyrights belong to the original authors.
+# Keep this notice when you use or modify the code
 import sys
 import zmq
 import json
