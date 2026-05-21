@@ -1,0 +1,108 @@
+{
+  "sources": [
+    {
+      "wave_source": "红方广播源",
+      "center_freq": 433.2e6,
+      "bandwidth": 0.54e6,
+      "power_dbm": -60,
+      "access_code": "0010111101101111010011000111010010111001000101000100100100101110",
+      "gaussian_filter_params": {
+        "SPS": 52,
+        "BT": 0.35,
+        "Sample Rate": 1e6,
+        "Sensitivity": 1.5756
+      }
+    },
+    {
+      "wave_source": "红方一级干扰源",
+      "center_freq": 432.2e6,
+      "bandwidth": 0.94e6,
+      "power_dbm": -10,
+      "access_code": "0001011011101000110100110111011100010101000111000111000100101101",
+      "gaussian_filter_params": {
+        "SPS": 52,
+        "BT": 0.35,
+        "Sample Rate": 1e6,
+        "Sensitivity": 2.8323
+      }
+    },
+    {
+      "wave_source": "红方二级干扰源",
+      "center_freq": 432.5e6,
+      "bandwidth": 0.86e6,
+      "power_dbm": -10,
+      "access_code": "0001011011101000110100110111011100010101000111000111000100101101",
+      "gaussian_filter_params": {
+        "SPS": 52,
+        "BT": 0.35,
+        "Sample Rate": 1e6,
+        "Sensitivity": 2.5809
+      }
+    },
+    {
+      "wave_source": "红方三级干扰源",
+      "center_freq": 432.8e6,
+      "bandwidth": 0.25e6,
+      "power_dbm": -10,
+      "access_code": "0001011011101000110100110111011100010101000111000111000100101101",
+      "gaussian_filter_params": {
+        "SPS": 52,
+        "BT": 0.35,
+        "Sample Rate": 1e6,
+        "Sensitivity": 0.6646
+      }
+    },
+    {
+      "wave_source": "蓝方广播源",
+      "center_freq": 433.92e6,
+      "bandwidth": 0.54e6,
+      "power_dbm": -60,
+      "access_code": "0010111101101111010011000111010010111001000101000100100100101110",
+      "gaussian_filter_params": {
+        "SPS": 52,
+        "BT": 0.35,
+        "Sample Rate": 1e6,
+        "Sensitivity": 1.5756
+      }
+    },
+    {
+      "wave_source": "蓝方一级干扰源",
+      "center_freq": 434.92e6,
+      "bandwidth": 0.94e6,
+      "power_dbm": -10,
+      "access_code": "0001011011101000110100110111011100010101000111000111000100101101",
+      "gaussian_filter_params": {
+        "SPS": 52,
+        "BT": 0.35,
+        "Sample Rate": 1e6,
+        "Sensitivity": 2.8323
+      }
+    },
+    {
+      "wave_source": "蓝方二级干扰源",
+      "center_freq": 434.62e6,
+      "bandwidth": 0.86e6,
+      "power_dbm": -10,
+      "access_code": "0001011011101000110100110111011100010101000111000111000100101101",
+      "gaussian_filter_params": {
+        "SPS": 52,
+        "BT": 0.35,
+        "Sample Rate": 1e6,
+        "Sensitivity": 2.5809
+      }
+    },
+    {
+      "wave_source": "蓝方三级干扰源",
+      "center_freq": 434.32e6,
+      "bandwidth": 0.25e6,
+      "power_dbm": -10,
+      "access_code": "0001011011101000110100110111011100010101000111000111000100101101",
+      "gaussian_filter_params": {
+        "SPS": 52,
+        "BT": 0.35,
+        "Sample Rate": 1e6,
+        "Sensitivity": 0.6646
+      }
+    }
+  ]
+}

@@ -1,0 +1,297 @@
+options:
+  parameters:
+    author: ''
+    catch_exceptions: 'True'
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: ''
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: gfsk
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: gfsk
+    window_size: (1000,1000)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 8]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: D
+  id: variable
+  parameters:
+    comment: ''
+    value: 160e3
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [304, 8.0]
+    rotation: 0
+    state: enabled
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: 2e6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [200, 12]
+    rotation: 0
+    state: enabled
+- name: digital_gfsk_mod_0
+  id: digital_gfsk_mod
+  parameters:
+    affinity: ''
+    alias: ''
+    bt: '0.35'
+    comment: ''
+    do_unpack: 'True'
+    log: 'False'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_symbol: '4'
+    sensitivity: 2*3.14*D
+    verbose: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [528, 368.0]
+    rotation: 0
+    state: enabled
+- name: epy_block_0
+  id: epy_block
+  parameters:
+    _source_code: "# original author: SCNU-PIONEER \n\nimport numpy as np\nfrom gnuradio\
+      \ import gr\nimport crc\nimport time\nimport random\n\n\n# --- Official CRC8\
+      \ (poly=0x31) init & table ---\nrm_crc8 = crc.Configuration(8,0x31,0xff,0,1,1)\n\
+      rm_crc16 = crc.Configuration(16,0x1021,0xffff,0,1,1)\nheader_crc_calc = crc.Calculator(rm_crc8,True)\n\
+      frame_crc_calc = crc.Calculator(rm_crc16,True)\n\n\n# --- Official CRC16 table\
+      \ & init (little-endian output) ---\nCRC16_INIT = 0xFFFF\n\ndef _crc8(data):\n\
+      \n    return header_crc_calc.checksum(data) & 0xFF\n\n\ndef _crc16(data):\n\n\
+      \    return frame_crc_calc.checksum(data) & 0xFFFF\n\n\nCMD_OPTIONS = {\n  \
+      \  # name: (cmd_id, data_length)\n    \"enemy_pos\": (0x0A01, 24),\n    \"enemy_hp\"\
+      : (0x0A02, 12),\n    \"enemy_ammo\": (0x0A03, 10),\n    \"buff_state\": (0x0A04,\
+      \ 8),\n    \"gains\": (0x0A05, 36),\n    \"jamming\": (0x0A06, 6),\n}\n\n\n\n\
+      # --- \u534F\u8BAE\u5B57\u6BB5\u7ED3\u6784\u5B9A\u4E49\uFF08\u4E0E radar.yaml\
+      \ \u4FDD\u6301\u540C\u6B65\uFF09 ---\n_PROTO_FIELDS = {\n    \"enemy_pos\":\
+      \ [\n        (\"hero_x\", 2, \"uint16\"), (\"hero_y\", 2, \"uint16\"),\n   \
+      \     (\"engineer_x\", 2, \"uint16\"), (\"engineer_y\", 2, \"uint16\"),\n  \
+      \      (\"infantry_3_x\", 2, \"uint16\"), (\"infantry_3_y\", 2, \"uint16\"),\n\
+      \        (\"infantry_4_x\", 2, \"uint16\"), (\"infantry_4_y\", 2, \"uint16\"\
+      ),\n        (\"aerial_x\", 2, \"uint16\"), (\"aerial_y\", 2, \"uint16\"),\n\
+      \        (\"sentry_x\", 2, \"uint16\"), (\"sentry_y\", 2, \"uint16\"),\n   \
+      \ ],\n    \"enemy_hp\": [\n        (\"hero_hp\", 2, \"uint16\"), (\"engineer_hp\"\
+      , 2, \"uint16\"),\n        (\"infantry_3_hp\", 2, \"uint16\"), (\"infantry_4_hp\"\
+      , 2, \"uint16\"),\n        (\"reserved\", 2, \"uint16\"), (\"sentry_hp\", 2,\
+      \ \"uint16\"),\n    ],\n    \"enemy_ammo\": [\n        (\"hero_ammo\", 2, \"\
+      uint16\"), (\"infantry_3_ammo\", 2, \"uint16\"),\n        (\"infantry_4_ammo\"\
+      , 2, \"uint16\"), (\"aerial_ammo\", 2, \"uint16\"),\n        (\"sentry_ammo\"\
+      , 2, \"uint16\"),\n    ],\n    \"buff_state\": [\n        (\"remaining_gold\"\
+      , 2, \"uint16\"), (\"total_gold\", 2, \"uint16\"),\n        (\"macro_bits\"\
+      , 4, \"uint32\"),  # 4\u5B57\u8282\u4F4D\u57DF\uFF0C\u5EFA\u8BAE\u7528int\u4F20\
+      \u5165\n    ],\n    \"gains\": [\n        (\"hero_health_regen\", 1, \"uint8\"\
+      ), (\"hero_cooling_boost\", 2, \"uint16\"),\n        (\"hero_defense_boost\"\
+      , 1, \"uint8\"), (\"hero_defense_debuff\", 1, \"uint8\"),\n        (\"hero_attack_boost\"\
+      , 2, \"uint16\"), (\"engineer_health_regen\", 1, \"uint8\"),\n        (\"engineer_cooling_boost\"\
+      , 2, \"uint16\"), (\"engineer_defense_boost\", 1, \"uint8\"),\n        (\"engineer_defense_debuff\"\
+      , 1, \"uint8\"), (\"engineer_attack_boost\", 2, \"uint16\"),\n        (\"infantry_3_health_regen\"\
+      , 1, \"uint8\"), (\"infantry_3_cooling_boost\", 2, \"uint16\"),\n        (\"\
+      infantry_3_defense_boost\", 1, \"uint8\"), (\"infantry_3_defense_debuff\", 1,\
+      \ \"uint8\"),\n        (\"infantry_3_attack_boost\", 2, \"uint16\"), (\"infantry_4_health_regen\"\
+      , 1, \"uint8\"),\n        (\"infantry_4_cooling_boost\", 2, \"uint16\"), (\"\
+      infantry_4_defense_boost\", 1, \"uint8\"),\n        (\"infantry_4_defense_debuff\"\
+      , 1, \"uint8\"), (\"infantry_4_attack_boost\", 2, \"uint16\"),\n        (\"\
+      sentry_health_regen\", 1, \"uint8\"), (\"sentry_cooling_boost\", 2, \"uint16\"\
+      ),\n        (\"sentry_defense_boost\", 1, \"uint8\"), (\"sentry_defense_debuff\"\
+      , 1, \"uint8\"),\n        (\"sentry_attack_boost\", 2, \"uint16\"), (\"sentry_posture\"\
+      , 1, \"uint8\"),\n    ],\n    \"jamming\": [\n        (\"key\", 6, \"ascii6\"\
+      ),\n    ],\n}\n\ndef _encode_payload(cmd_option, payload, pad_mode=\"pad\"):\n\
+      \    fields = _PROTO_FIELDS.get(cmd_option)\n    if not fields:\n        # fallback:\
+      \ treat as ascii string\n        if isinstance(payload, str):\n            return\
+      \ [ord(c) for c in payload]\n        else:\n            raise ValueError(f\"\
+      No field def for {cmd_option}, and payload not str\")\n    out = bytearray()\n\
+      \    if not isinstance(payload, dict):\n        raise ValueError(f\"For cmd_option\
+      \ {cmd_option}, payload must be dict\")\n    for name, size, typ in fields:\n\
+      \        v = payload.get(name, 0)\n        if typ == \"uint16\":\n         \
+      \   out += int(v).to_bytes(2, \"little\", signed=False)\n        elif typ ==\
+      \ \"uint8\":\n            out += int(v).to_bytes(1, \"little\", signed=False)\n\
+      \        elif typ == \"uint32\":\n            out += int(v).to_bytes(4, \"little\"\
+      , signed=False)\n        elif typ == \"ascii6\":\n            s = str(v)[:6].ljust(6,\
+      \ '\\0')\n            out += bytes([ord(c) for c in s])\n        else:\n   \
+      \         raise ValueError(f\"Unknown type {typ}\")\n    return list(out)\n\n\
+      \nimport threading\nimport zmq\n\nclass byte_vector_source(gr.sync_block):\n\
+      \    \"\"\"\n    \u5C06\u8F93\u5165\u6570\u636E\uFF08dict\u6216\u5B57\u7B26\u4E32\
+      \uFF09\u5C01\u88C5\u4E3A RoboMaster \u534F\u8BAE\u5E27\u5E76\u5FAA\u73AF\u8F93\
+      \u51FA\u3002\n    \u652F\u6301\u672C\u5730\u53C2\u6570\uFF08mode=local\uFF09\
+      \u6216\u5916\u90E8ZMQ\u5BA2\u6237\u7AEF\u53C2\u6570\uFF08mode=client\uFF09\u3002\
+      \n    \u5E27\u7ED3\u6784: [SOF|len(2)|seq|CRC8][cmd_id(2)][data][CRC16(2)]\n\
+      \    \"\"\"\n\n    def __init__(self, sample_rate = 1e6, payload=None, cmd_option=\"\
+      enemy_pos\", seq=-1,chunk_bits = 1, pad_mode=\"pad\", mode=\"local\", rand_pad\
+      \ = False, push_freq = 10):\n        gr.sync_block.__init__(\n            self,\n\
+      \            name=\"Byte Vector Source\",\n            in_sig=None,\n      \
+      \      out_sig=[np.uint8]\n        )\n        self.sample_rate = sample_rate\n\
+      \        self.seq = seq\n        self._seq_manual = seq & 0xFF\n        self.mode\
+      \ = mode\n        self.cmd_option = cmd_option\n        self.pad_mode = pad_mode\n\
+      \        self.chunk_bits = 1\n        self.ptr = 0\n        self.chunk_bits\
+      \ = chunk_bits\n        self.rand_pad = rand_pad\n        self.push_period =\
+      \ 1/push_freq\n        self.lock = threading.Lock()\n        if self.mode ==\
+      \ \"client\":\n            self.vector = np.zeros(8, dtype=np.uint8)  # \u521D\
+      \u59CB\u7A7A\u5E27\n            self.v_len = len(self.vector)\n            self._start_zmq_thread()\n\
+      \            print(\"Byte Source in CLIENT mode, waiting for ZMQ payload...\"\
+      )\n        else:\n            if cmd_option not in CMD_OPTIONS:\n          \
+      \      raise ValueError(f\"cmd_option must be one of {list(CMD_OPTIONS.keys())}\"\
+      )\n            self.vector = self._build_frame(payload)\n            if self.rand_pad:\n\
+      \                pad_num = self.push_period * sample_rate - len(self.vector)\n\
+      \                np.append(self.vector,list(random.randbytes(pad_num)))\n  \
+      \          self.vector = self._bytes_to_chunks(self.vector, self.chunk_bits)\n\
+      \            self.v_len = len(self.vector)\n            print(f\"Byte Source\
+      \ Initialized (mode=chunks(2b), len={self.v_len}, cmd=0x{self._cmd_id:04X})\"\
+      )\n\n    \n\n    def _start_zmq_thread(self):\n        def zmq_worker():\n \
+      \           ctx = zmq.Context()\n            sock = ctx.socket(zmq.PULL)\n \
+      \           sock.bind(\"tcp://*:5555\")\n            while True:\n         \
+      \       try:\n                    msg = sock.recv_json()\n                 \
+      \   # \u671F\u671Bmsg\u4E3Adict\uFF0C\u5305\u542Bcmd_option\u548Cpayload\u5B57\
+      \u6BB5\n                    cmd_option = msg.get(\"cmd_option\", \"enemy_pos\"\
+      )\n                    payload = {k: v for k, v in msg.items() if k != \"cmd_option\"\
+      }\n                    if cmd_option not in CMD_OPTIONS:\n                 \
+      \       continue\n                    frame = self._build_frame(payload, cmd_option=cmd_option)\n\
+      \                    chunks = self._bytes_to_chunks(frame, self.chunk_bits)\n\
+      \                    with self.lock:\n                        self.vector =\
+      \ chunks\n                        self.v_len = len(chunks)\n               \
+      \         self.ptr = 0\n                    print(f\"[ZMQ] Received payload\
+      \ for {cmd_option}, frame updated.\")\n                except Exception as e:\n\
+      \                    print(f\"[ZMQ] Error: {e}\")\n        t = threading.Thread(target=zmq_worker,\
+      \ daemon=True)\n        t.start()\n\n    def _build_frame(self, payload, cmd_option=None):\n\
+      \        if self._seq_manual == -1:\n            seq = random.randint(0,65535)\n\
+      \        if cmd_option is None:\n            cmd_option = self.cmd_option\n\
+      \        self._cmd_id, data_len_expect = CMD_OPTIONS[cmd_option]\n        #\
+      \ \u7F16\u7801payload\n        if cmd_option == \"jamming\":\n            if\
+      \ payload is None:\n                payload = \"RM2026\"\n            if isinstance(payload,\
+      \ str):\n                data_bytes = [ord(c) for c in payload.strip().strip(\"\
+      '\\\"\")]\n                if len(data_bytes) < data_len_expect:\n         \
+      \           data_bytes += [0x00] * (data_len_expect - len(data_bytes))\n   \
+      \             if len(data_bytes) > data_len_expect:\n                    data_bytes\
+      \ = data_bytes[:data_len_expect]\n            else:\n                data_bytes\
+      \ = _encode_payload(cmd_option, payload, self.pad_mode)\n        else:\n   \
+      \         if payload is None:\n                payload = {}\n            data_bytes\
+      \ = _encode_payload(cmd_option, payload, self.pad_mode)\n            if len(data_bytes)\
+      \ < data_len_expect:\n                data_bytes += [0x00] * (data_len_expect\
+      \ - len(data_bytes))\n            if len(data_bytes) > data_len_expect:\n  \
+      \              data_bytes = data_bytes[:data_len_expect]\n        data_len =\
+      \ len(data_bytes)\n        sof = 0xA5\n        len_l = data_len & 0xFF\n   \
+      \     len_h = (data_len >> 8) & 0xFF\n        seq_derived = self._seq_manual\
+      \ & 0xFF\n        header_wo_crc8 = [sof, len_l, len_h, seq_derived]\n      \
+      \  crc8 = _crc8(header_wo_crc8)\n        frame_header = header_wo_crc8 + [crc8]\n\
+      \        cmd_l = self._cmd_id & 0xFF\n        cmd_h = (self._cmd_id >> 8) &\
+      \ 0xFF\n        body = [cmd_l, cmd_h] + data_bytes\n        crc16 = _crc16(frame_header\
+      \ + body)\n        crc16_l = crc16 & 0xFF\n        crc16_h = (crc16 >> 8) &\
+      \ 0xFF\n        frame = frame_header + body + [crc16_l, crc16_h]\n        return\
+      \ np.array(frame, dtype=np.uint8)\n\n    def _bytes_to_chunks(self, byte_arr,\
+      \ chunk_bits=2):\n        \"\"\"\n        Convert an array of bytes (np.uint8)\
+      \ into an array of chunk values.\n        - Interpret each byte MSB-first.\n\
+      \        - Group bits into chunks of `chunk_bits` (e.g. 2), producing values\
+      \ 0..(2^chunk_bits-1).\n        - If total bits is not divisible by chunk_bits,\
+      \ pad with zeros at the end.\n        Returns np.array(dtype=np.uint8) of chunk\
+      \ values.\n        \"\"\"\n        if chunk_bits <= 0:\n            raise ValueError(\"\
+      chunk_bits must >=1\")\n        arr = np.asarray(byte_arr, dtype=np.uint8)\n\
+      \        # Extract bits MSB-first per byte\n        try:\n            bits =\
+      \ np.unpackbits(arr, bitorder='big')\n        except TypeError:\n          \
+      \  # Older numpy versions may not support bitorder kw; fallback\n          \
+      \  bits = np.empty(len(arr) * 8, dtype=np.uint8)\n            for i, b in enumerate(arr):\n\
+      \                for j in range(8):\n                    bits[i * 8 + j] = (int(b)\
+      \ >> (7 - j)) & 1\n\n        total_bits = bits.size\n        # Pad to multiple\
+      \ of chunk_bits\n        rem = total_bits % chunk_bits\n        if rem != 0:\n\
+      \            pad = chunk_bits - rem\n            bits = np.concatenate((bits,\
+      \ np.zeros(pad, dtype=np.uint8)))\n\n        # Reshape and convert to integer\
+      \ values\n        bits2 = bits.reshape(-1, chunk_bits)\n        # weights: most-significant\
+      \ bit has highest weight\n        weights = (1 << np.arange(chunk_bits - 1,\
+      \ -1, -1)).astype(np.uint8)\n        vals = bits2.dot(weights).astype(np.uint8)\n\
+      \        return vals\n\n    def work(self, input_items, output_items):\n   \
+      \     out = output_items[0]\n        n = len(out)\n        with self.lock:\n\
+      \            for i in range(n):\n                out[i] = self.vector[self.ptr]\n\
+      \                self.ptr = (self.ptr + 1) % self.v_len\n        return n\n"
+    affinity: ''
+    alias: ''
+    chunk_bits: '1'
+    cmd_option: '"jamming"'
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    mode: '''local'''
+    pad_mode: '''pad'''
+    payload: None
+    push_freq: '10'
+    rand_pad: 'True'
+    sample_rate: 1e6
+    seq: '3'
+  states:
+    _io_cache: "('Byte Vector Source', 'byte_vector_source', [('sample_rate', '1000000.0'),\
+      \ ('payload', 'None'), ('cmd_option', \"'enemy_pos'\"), ('seq', '-1'), ('chunk_bits',\
+      \ '1'), ('pad_mode', \"'pad'\"), ('mode', \"'local'\"), ('rand_pad', 'False'),\
+      \ ('push_freq', '10')], [], [('0', 'byte', 1)], '\\n\u5C06\u8F93\u5165\u6570\
+      \u636E\uFF08dict\u6216\u5B57\u7B26\u4E32\uFF09\u5C01\u88C5\u4E3A RoboMaster\
+      \ \u534F\u8BAE\u5E27\u5E76\u5FAA\u73AF\u8F93\u51FA\u3002\\n\u652F\u6301\u672C\
+      \u5730\u53C2\u6570\uFF08mode=local\uFF09\u6216\u5916\u90E8ZMQ\u5BA2\u6237\u7AEF\
+      \u53C2\u6570\uFF08mode=client\uFF09\u3002\\n\u5E27\u7ED3\u6784: [SOF|len(2)|seq|CRC8][cmd_id(2)][data][CRC16(2)]\\\
+      n', ['chunk_bits', 'cmd_option', 'mode', 'pad_mode', 'rand_pad', 'sample_rate',\
+      \ 'seq'])"
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [304, 316.0]
+    rotation: 0
+    state: enabled
+- name: iio_pluto_sink_0
+  id: iio_pluto_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    attenuation1: '10.0'
+    bandwidth: '20000000'
+    buffer_size: '32768'
+    comment: ''
+    cyclic: 'False'
+    filter: ''
+    filter_source: '''Auto'''
+    fpass: '0'
+    frequency: '2400000000'
+    fstop: '0'
+    len_tag_key: ''
+    samplerate: samp_rate
+    type: fc32
+    uri: ''
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [728, 324.0]
+    rotation: 0
+    state: enabled
+
+connections:
+- [digital_gfsk_mod_0, '0', iio_pluto_sink_0, '0']
+- [epy_block_0, '0', digital_gfsk_mod_0, '0']
+
+metadata:
+  file_format: 1
+  grc_version: 3.10.12.0
