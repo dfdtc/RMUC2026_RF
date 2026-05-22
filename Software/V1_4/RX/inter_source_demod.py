@@ -5,7 +5,9 @@
 # SPDX-License-Identifier: GPL-3.0
 #
 # GNU Radio Python Flow Graph
-# Title: file_in_test
+# Title: inter_source_demod
+# Author: dfdtc
+# Copyright: dfdtc
 # GNU Radio version: 3.10.12.0
 
 from PyQt5 import Qt
@@ -26,18 +28,18 @@ from argparse import ArgumentParser
 from gnuradio.eng_arg import eng_float, intx
 from gnuradio import eng_notation
 from gnuradio import zeromq
-import file_in_test_epy_block_0 as epy_block_0  # embedded python block
+import inter_source_demod_epy_block_0 as epy_block_0  # embedded python block
 import sip
 import threading
 
 
 
-class file_in_test(gr.top_block, Qt.QWidget):
+class inter_source_demod(gr.top_block, Qt.QWidget):
 
     def __init__(self):
-        gr.top_block.__init__(self, "file_in_test", catch_exceptions=True)
+        gr.top_block.__init__(self, "inter_source_demod", catch_exceptions=True)
         Qt.QWidget.__init__(self)
-        self.setWindowTitle("file_in_test")
+        self.setWindowTitle("inter_source_demod")
         qtgui.util.check_set_qss()
         try:
             self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
@@ -55,7 +57,7 @@ class file_in_test(gr.top_block, Qt.QWidget):
         self.top_grid_layout = Qt.QGridLayout()
         self.top_layout.addLayout(self.top_grid_layout)
 
-        self.settings = Qt.QSettings("gnuradio/flowgraphs", "file_in_test")
+        self.settings = Qt.QSettings("gnuradio/flowgraphs", "inter_source_demod")
 
         try:
             geometry = self.settings.value("geometry")
@@ -72,13 +74,12 @@ class file_in_test(gr.top_block, Qt.QWidget):
         self.samp_rate = samp_rate = 1e6
         self.bw = bw = 0.820e6
         self.symb_rate = symb_rate = samp_rate/sps
-        self.inter_header = inter_header = digital.header_format_default("0001011011101000110100110111011100010101000111000111000100101101",0, 1)
         self.cent_freq = cent_freq = 433.2e6
         self.bfsk = bfsk = digital.constellation_calcdist([-1,1], [0, 1],
         1, 1, digital.constellation.AMPLITUDE_NORMALIZATION).base()
         self.bfsk.set_npwr(1.0)
         self.access_code = access_code = "0001011011101000110100110111011100010101000111000111000100101101"
-        self.D = D = bw/2
+        self.D = D = bw/2-samp_rate/sps
 
         ##################################################
         # Blocks
@@ -192,7 +193,7 @@ class file_in_test(gr.top_block, Qt.QWidget):
 
 
     def closeEvent(self, event):
-        self.settings = Qt.QSettings("gnuradio/flowgraphs", "file_in_test")
+        self.settings = Qt.QSettings("gnuradio/flowgraphs", "inter_source_demod")
         self.settings.setValue("geometry", self.saveGeometry())
         self.stop()
         self.wait()
@@ -204,6 +205,7 @@ class file_in_test(gr.top_block, Qt.QWidget):
 
     def set_sps(self, sps):
         self.sps = sps
+        self.set_D(self.bw/2-self.samp_rate/self.sps)
         self.set_symb_rate(self.samp_rate/self.sps)
         self.digital_symbol_sync_xx_0.set_sps(self.sps)
         self.fir_filter_xxx_0_0.set_taps(firdes.gaussian(1.2, self.sps, 0.35, 60))
@@ -213,6 +215,7 @@ class file_in_test(gr.top_block, Qt.QWidget):
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
+        self.set_D(self.bw/2-self.samp_rate/self.sps)
         self.set_symb_rate(self.samp_rate/self.sps)
         self.analog_quadrature_demod_cf_0_0_0.set_gain((self.samp_rate/(2*math.pi*self.D)))
         self.blocks_throttle2_0.set_sample_rate((self.samp_rate*2))
@@ -223,19 +226,13 @@ class file_in_test(gr.top_block, Qt.QWidget):
 
     def set_bw(self, bw):
         self.bw = bw
-        self.set_D(self.bw/2)
+        self.set_D(self.bw/2-self.samp_rate/self.sps)
 
     def get_symb_rate(self):
         return self.symb_rate
 
     def set_symb_rate(self, symb_rate):
         self.symb_rate = symb_rate
-
-    def get_inter_header(self):
-        return self.inter_header
-
-    def set_inter_header(self, inter_header):
-        self.inter_header = inter_header
 
     def get_cent_freq(self):
         return self.cent_freq
@@ -265,7 +262,7 @@ class file_in_test(gr.top_block, Qt.QWidget):
 
 
 
-def main(top_block_cls=file_in_test, options=None):
+def main(top_block_cls=inter_source_demod, options=None):
 
     qapp = Qt.QApplication(sys.argv)
 

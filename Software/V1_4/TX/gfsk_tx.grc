@@ -1,17 +1,17 @@
 options:
   parameters:
-    author: ''
+    author: dfdtc
     catch_exceptions: 'True'
     category: '[GRC Hier Blocks]'
     cmake_opt: ''
     comment: ''
-    copyright: ''
+    copyright: dfdtc
     description: ''
     gen_cmake: 'On'
     gen_linking: dynamic
     generate_options: qt_gui
     hier_block_src_path: '.:'
-    id: gfsk
+    id: gfsk_tx
     max_nouts: '0'
     output_language: python
     placement: (0,0)
@@ -22,7 +22,7 @@ options:
     run_options: prompt
     sizing_mode: fixed
     thread_safe_setters: ''
-    title: gfsk
+    title: gfsk_tx
     window_size: (1000,1000)
   states:
     bus_sink: false
@@ -37,24 +37,174 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: 160e3
+    value: bw/2-samp_rate/sps
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [304, 8.0]
+    coordinate: [280, 8.0]
+    rotation: 0
+    state: enabled
+- name: access_code
+  id: variable
+  parameters:
+    comment: ''
+    value: '"0001011011101000110100110111011100010101000111000111000100101101"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [392, 112.0]
+    rotation: 0
+    state: enabled
+- name: bw
+  id: variable
+  parameters:
+    comment: ''
+    value: 0.820e6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [576, 112.0]
+    rotation: 0
+    state: enabled
+- name: cent_freq
+  id: variable
+  parameters:
+    comment: ''
+    value: 433.2e6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [664, 112.0]
+    rotation: 0
+    state: enabled
+- name: rmuc_inter_format
+  id: variable_header_format_default
+  parameters:
+    access_code: '"0001011011101000110100110111011100010101000111000111000100101101"'
+    bps: '1'
+    comment: ''
+    threshold: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 136.0]
+    rotation: 0
+    state: enabled
+- name: rmuc_inter_format_0
+  id: variable_header_format_default
+  parameters:
+    access_code: '"0010111101101111010011000111010010111001000101000100100100101110"'
+    bps: '1'
+    comment: ''
+    threshold: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 240.0]
     rotation: 0
     state: enabled
 - name: samp_rate
   id: variable
   parameters:
     comment: ''
-    value: 2e6
+    value: 1e6
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [200, 12]
+    coordinate: [184, 8.0]
+    rotation: 0
+    state: enabled
+- name: sps
+  id: variable
+  parameters:
+    comment: ''
+    value: '52'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [184, 80.0]
+    rotation: 0
+    state: enabled
+- name: symb_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: samp_rate/sps
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [264, 80.0]
+    rotation: 0
+    state: enabled
+- name: blocks_msgpair_to_var_0
+  id: blocks_msgpair_to_var
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    target: '"cent_freq"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [856, 136.0]
+    rotation: 0
+    state: enabled
+- name: blocks_msgpair_to_var_1
+  id: blocks_msgpair_to_var
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    target: '"bw"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [856, 72.0]
+    rotation: 0
+    state: enabled
+- name: blocks_msgpair_to_var_1_0
+  id: blocks_msgpair_to_var
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    target: '"access_code"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [856, 8.0]
+    rotation: 0
+    state: enabled
+- name: blocks_tagged_stream_mux_0
+  id: blocks_tagged_stream_mux
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    lengthtagname: '"packet_len"'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    ninputs: '2'
+    tag_preserve_head_pos: '0'
+    type: byte
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [448, 464.0]
     rotation: 0
     state: enabled
 - name: digital_gfsk_mod_0
@@ -68,14 +218,31 @@ blocks:
     log: 'False'
     maxoutbuf: '0'
     minoutbuf: '0'
-    samples_per_symbol: '4'
-    sensitivity: 2*3.14*D
+    samples_per_symbol: sps
+    sensitivity: 2*3.14*D/samp_rate
     verbose: 'False'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [528, 368.0]
+    coordinate: [688, 456.0]
+    rotation: 0
+    state: enabled
+- name: digital_protocol_formatter_bb_0
+  id: digital_protocol_formatter_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    format: rmuc_inter_format
+    len_tag_key: '"packet_len"'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [208, 368.0]
     rotation: 0
     state: enabled
 - name: epy_block_0
@@ -261,7 +428,89 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [304, 316.0]
+    coordinate: [24, 420.0]
+    rotation: 0
+    state: enabled
+- name: epy_block_0_0
+  id: epy_block
+  parameters:
+    _source_code: "\"\"\"\nEmbedded Python Block: ZMQ PULL + JSON \u89E3\u6790\n-\
+      \ \u5185\u90E8\u521B\u5EFA ZMQ PULL socket\uFF0C\u63A5\u6536 JSON \u6D88\u606F\
+      \n- \u89E3\u6790\u51FA center_freq_mhz, bandwidth_mhz, access_code\n- \u8F93\
+      \u51FA\u4E09\u4E2A message \u7AEF\u53E3: freq (int), bw (int), access_code (string)\n\
+      \"\"\"\n\nimport json\nimport threading\nimport zmq\nfrom gnuradio import gr\n\
+      import pmt\nimport time\n\nclass blk(gr.sync_block):\n    def __init__(self,\
+      \ endpoint=\"tcp://127.0.0.1:5555\", bind=False,rx_type = \"inter\"):\n    \
+      \    gr.sync_block.__init__(\n            self,\n            name='ZMQ JSON\
+      \ Pull Parser (int freq/bw + access_code)',\n            in_sig=None,\n    \
+      \        out_sig=None\n        )\n        if rx_type not in [\"inter\", \"boardcast\"\
+      ]:\n            raise Exception(\"rx_type must be 'inter' or 'boardcast'\")\n\
+      \        else:\n            self.rx_type = rx_type\n        self.endpoint =\
+      \ endpoint\n        self.bind = bind\n        self.running = False\n       \
+      \ self.thread = None\n\n        # \u6CE8\u518C\u4E09\u4E2A\u8F93\u51FA\u7AEF\
+      \u53E3\n        self.message_port_register_out(pmt.intern('freq'))        #\
+      \ int\n        self.message_port_register_out(pmt.intern('bw'))          # int\n\
+      \        self.message_port_register_out(pmt.intern('access_code')) # string\n\
+      \n        # \u542F\u52A8\u63A5\u6536\u7EBF\u7A0B\n        self.start_receiver()\n\
+      \n    def start_receiver(self):\n        self.running = True\n        self.thread\
+      \ = threading.Thread(target=self.receiver_loop)\n        self.thread.daemon\
+      \ = True\n        self.thread.start()\n\n    def receiver_loop(self):\n    \
+      \    context = zmq.Context()\n        socket = context.socket(zmq.SUB)\n\n \
+      \       socket.setsockopt(zmq.CONFLATE, 1)      # \u53EA\u4FDD\u7559\u6700\u65B0\
+      \u547D\u4EE4\n        socket.setsockopt(zmq.SUBSCRIBE, b\"\")    # \u8BA2\u9605\
+      \u6240\u6709\u4E3B\u9898\n        socket.setsockopt(zmq.RCVTIMEO, 10000)   #\
+      \ 30\u79D2\u63A5\u6536\u8D85\u65F6\uFF0C\u9632\u6B62\u65E0\u9650\u671F\u963B\
+      \u585E\n        if self.bind:\n            socket.bind(self.endpoint)\n    \
+      \        print(f\"[ZMQ] Binding PULL to {self.endpoint}\")\n        else:\n\
+      \            socket.connect(self.endpoint)\n            print(f\"[ZMQ] Connecting\
+      \ PULL to {self.endpoint}\")\n\n        while self.running:\n            try:\n\
+      \                msg_bytes = socket.recv()\n                self.process_message(msg_bytes)\n\
+      \            except zmq.Again:\n                print(\"[ZMQ] Receive timeout,\
+      \ no message received\")\n                continue    \n            except zmq.ZMQError\
+      \ as e:\n                print(f\"[ZMQ] Error: {e}\")\n                break\n\
+      \            except Exception as e:\n                print(f\"[ZMQ] Unexpected\
+      \ error: {e}\")\n                break\n\n        socket.close()\n        context.term()\n\
+      \        print(\"[ZMQ] Receiver thread stopped\")\n        if self.delay > 0:\n\
+      \            time.sleep(self.delay)\n\n    def process_message(self, msg_bytes):\n\
+      \        try:\n            s = msg_bytes.decode('utf-8')\n            data =\
+      \ json.loads(s)\n        except Exception as e:\n            print(f\"[Parser]\
+      \ JSON decode error: {e}\")\n            return\n        data = data[self.rx_type]\n\
+      \        # \u63D0\u53D6\u5B57\u6BB5\uFF0C\u7F3A\u5931\u65F6\u4F7F\u7528\u9ED8\
+      \u8BA4\u503C\u5E76\u62A5\u8B66\n        freq_val = data.get('center_freq')\n\
+      \        bw_val   = data.get('bandwidth')\n        code_val = data.get('access_code')\n\
+      \n        if freq_val is None or bw_val is None or code_val is None:\n     \
+      \       missing = []\n            if freq_val is None: missing.append('center_freq')\n\
+      \            if bw_val is None: missing.append('bandwidth')\n            if\
+      \ code_val is None: missing.append('access_code')\n            print(f\"[Parser]\
+      \ Missing keys: {missing} in {data.keys()}\")\n            return\n\n      \
+      \  # \u8F6C\u6362\u4E3A int (\u622A\u65AD\u5C0F\u6570)\n        freq_int = int(freq_val)\n\
+      \        bw_int   = int(bw_val)\n\n        # \u53D1\u9001\u6D88\u606F\n    \
+      \    self.message_port_pub(pmt.intern('freq'), \n                          \
+      \    pmt.cons(pmt.intern('freq'), pmt.from_long(freq_int)))\n        self.message_port_pub(pmt.intern('bw'),\
+      \ \n                              pmt.cons(pmt.intern('bw'), pmt.from_long(bw_int)))\n\
+      \        self.message_port_pub(pmt.intern('access_code'), \n               \
+      \               pmt.cons(pmt.intern('access_code'), pmt.intern(code_val)))\n\
+      \n        print(f\"[Parser] Sent: freq={freq_int/1e6} MHz, bw={bw_int/1e6} MHz,\
+      \ access_code={code_val}\")\n\n    def stop(self):\n        self.running = False\n\
+      \        if self.thread and self.thread.is_alive():\n            self.thread.join(timeout=2.0)\n\
+      \n    def __del__(self):\n        self.stop()"
+    affinity: ''
+    alias: ''
+    bind: 'False'
+    comment: ''
+    endpoint: '''tcp://127.0.0.1:5555'''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    rx_type: '''inter'''
+  states:
+    _io_cache: ('ZMQ JSON Pull Parser (int freq/bw + access_code)', 'blk', [('endpoint',
+      "'tcp://127.0.0.1:5555'"), ('bind', 'False'), ('rx_type', "'inter'")], [], [('access_code',
+      'message', 1), ('bw', 'message', 1), ('freq', 'message', 1)], '', ['bind', 'endpoint',
+      'rx_type'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [392, 8.0]
     rotation: 0
     state: enabled
 - name: iio_pluto_sink_0
@@ -270,30 +519,36 @@ blocks:
     affinity: ''
     alias: ''
     attenuation1: '10.0'
-    bandwidth: '20000000'
+    bandwidth: int(bw)
     buffer_size: '32768'
     comment: ''
     cyclic: 'False'
     filter: ''
     filter_source: '''Auto'''
     fpass: '0'
-    frequency: '2400000000'
+    frequency: int(cent_freq)
     fstop: '0'
     len_tag_key: ''
-    samplerate: samp_rate
+    samplerate: int(samp_rate)
     type: fc32
     uri: ''
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [728, 324.0]
+    coordinate: [888, 412.0]
     rotation: 0
     state: enabled
 
 connections:
+- [blocks_tagged_stream_mux_0, '0', digital_gfsk_mod_0, '0']
 - [digital_gfsk_mod_0, '0', iio_pluto_sink_0, '0']
-- [epy_block_0, '0', digital_gfsk_mod_0, '0']
+- [digital_protocol_formatter_bb_0, '0', blocks_tagged_stream_mux_0, '0']
+- [epy_block_0, '0', blocks_tagged_stream_mux_0, '1']
+- [epy_block_0, '0', digital_protocol_formatter_bb_0, '0']
+- [epy_block_0_0, access_code, blocks_msgpair_to_var_1_0, inpair]
+- [epy_block_0_0, bw, blocks_msgpair_to_var_1, inpair]
+- [epy_block_0_0, freq, blocks_msgpair_to_var_0, inpair]
 
 metadata:
   file_format: 1

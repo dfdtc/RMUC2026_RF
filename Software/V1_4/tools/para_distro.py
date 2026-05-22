@@ -100,14 +100,14 @@ if __name__ == "__main__":
     parser.add_argument("--delay", type=float, default=0.0,
                         help="每条消息发送间隔（秒），默认 0")
     args = parser.parse_args()"""
-    paradistro = ParaDistro(team = "blue", json_file="./RF_para.json",endpoint="tcp://127.0.0.1:5555")
+    paradistro = ParaDistro(team = "blue", json_file="./Software/V1_4/tools/RF_para.json",endpoint="tcp://127.0.0.1:5555")
     autorunner = paradistro.Auto_Distributor(paradistro, inter_level=1)
     autorunner.start()
-    time.sleep(5)
+    time.sleep(15)
     autorunner.update_inter_level(2)
-    time.sleep(5)
+    time.sleep(15)
     autorunner.update_inter_level(3)
-    time.sleep(5)
+    time.sleep(15)
     autorunner.stop()
 
     
