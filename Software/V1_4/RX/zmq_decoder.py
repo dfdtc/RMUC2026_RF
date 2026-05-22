@@ -42,7 +42,7 @@ class Frame_decoder:
 
 
 # ---------------------------- 输出包装函数（便于后续替换） ----------------------------
-def output_result(data: bytes):
+def output_result(cmd:int, data: bytes):
     """
     输出解析结果，目前仅打印。
     后续可扩展为存储、转发、显示等。
@@ -72,12 +72,12 @@ class StreamFrameDecoder:
             result = self._try_parse_one()
             if result is None:
                 break          # 无法解析更多帧（数据不足或帧错误）
-            data, consumed = result
-            output_result(data)            # 输出解析结果
+            cmd, data, consumed = result
+            output_result(cmd, data)            # 输出解析结果
             # 移除已解析的字节
             self.buffer = self.buffer[consumed:]
 
-    def _try_parse_one(self) -> Optional[Tuple[bytes, int]]:
+    def _try_parse_one(self) -> Optional[Tuple[int, bytes, int]]:
         """
         尝试从缓冲区起始位置解析一帧。
         返回 (解析出的data负载, 本帧总字节数) 或 None。
@@ -151,7 +151,7 @@ class StreamFrameDecoder:
 
             # 解析成功，返回负载数据和总消耗字节数
             consumed = frame_end - pos
-            return data, consumed
+            return cmd, data, consumed
 
         # 没有找到有效帧起始（可能缓冲区全是无效数据），清空缓冲区？这里保守处理，仅返回 None
         # 实际应用中可考虑丢弃一定量的无效数据，但为安全暂不清空。
