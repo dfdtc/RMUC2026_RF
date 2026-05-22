@@ -25,6 +25,7 @@ from PyQt5 import Qt
 from argparse import ArgumentParser
 from gnuradio.eng_arg import eng_float, intx
 from gnuradio import eng_notation
+from gnuradio import zeromq
 import file_in_test_epy_block_0 as epy_block_0  # embedded python block
 import sip
 import threading
@@ -83,6 +84,7 @@ class file_in_test(gr.top_block, Qt.QWidget):
         # Blocks
         ##################################################
 
+        self.zeromq_pub_sink_0 = zeromq.pub_sink(gr.sizeof_char, 1, "tcp://127.0.0.1:5559", 100, False, 4096, '', True, True)
         self.rational_resampler_xxx_0 = filter.rational_resampler_ccc(
                 interpolation=1,
                 decimation=2,
@@ -161,7 +163,7 @@ class file_in_test(gr.top_block, Qt.QWidget):
         self.blocks_msgpair_to_var_0 = blocks.msg_pair_to_var(self.set_cent_freq)
         self.blocks_file_source_0 = blocks.file_source(gr.sizeof_gr_complex*1, '/home/shuyusihan/下载/RX_BLUE_ganrao_1', False, 0, 0)
         self.blocks_file_source_0.set_begin_tag(pmt.PMT_NIL)
-        self.blocks_file_sink_0 = blocks.file_sink(gr.sizeof_char*1, '/home/shuyusihan/test_decode.txt', False)
+        self.blocks_file_sink_0 = blocks.file_sink(gr.sizeof_char*1, './test_decode.txt', False)
         self.blocks_file_sink_0.set_unbuffered(False)
         self.analog_quadrature_demod_cf_0_0_0 = analog.quadrature_demod_cf((samp_rate/(2*math.pi*D)))
         self.analog_agc_xx_1 = analog.agc_ff((1e-4), 1.0, 1.0, 65536)
@@ -179,6 +181,7 @@ class file_in_test(gr.top_block, Qt.QWidget):
         self.connect((self.analog_quadrature_demod_cf_0_0_0, 0), (self.fir_filter_xxx_0_0, 0))
         self.connect((self.blocks_file_source_0, 0), (self.blocks_throttle2_0, 0))
         self.connect((self.blocks_pack_k_bits_bb_0, 0), (self.blocks_file_sink_0, 0))
+        self.connect((self.blocks_pack_k_bits_bb_0, 0), (self.zeromq_pub_sink_0, 0))
         self.connect((self.blocks_throttle2_0, 0), (self.analog_agc_xx_0, 0))
         self.connect((self.digital_binary_slicer_fb_0, 0), (self.digital_correlate_access_code_xx_ts_0, 0))
         self.connect((self.digital_correlate_access_code_xx_ts_0, 0), (self.blocks_pack_k_bits_bb_0, 0))

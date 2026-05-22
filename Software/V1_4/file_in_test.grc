@@ -74,7 +74,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1288, 156.0]
+    coordinate: [1256, 28.0]
     rotation: 0
     state: enabled
 - name: bw
@@ -214,7 +214,7 @@ blocks:
     alias: ''
     append: 'False'
     comment: ''
-    file: /home/shuyusihan/test_decode.txt
+    file: ./test_decode.txt
     type: byte
     unbuffered: 'False'
     vlen: '1'
@@ -222,7 +222,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [848, 232.0]
+    coordinate: [1144, 416.0]
     rotation: 0
     state: enabled
 - name: blocks_file_source_0
@@ -713,13 +713,13 @@ blocks:
 - name: zeromq_pub_sink_0
   id: zeromq_pub_sink
   parameters:
-    address: '"tcp://127.0.0.1:11451"'
+    address: '"tcp://127.0.0.1:5559"'
     affinity: ''
     alias: ''
     bind: 'True'
     comment: ''
     drop_on_hwm: 'True'
-    hwm: '-1'
+    hwm: '4096'
     key: ''
     pass_tags: 'False'
     timeout: '100'
@@ -729,9 +729,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1344, 400.0]
+    coordinate: [1344, 352.0]
     rotation: 0
-    state: disabled
+    state: enabled
 
 connections:
 - [analog_agc_xx_0, '0', rational_resampler_xxx_0, '0']
