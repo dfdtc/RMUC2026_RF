@@ -35,8 +35,8 @@ class ParaDistro:
             sys.exit(1)
 
         # 预期格式：{"sources": [...]}
-        sources = data.get("sources")
-        if not isinstance(sources, list):
+        self.sources = data.get("sources")
+        if not isinstance(self.sources, list):
             print("错误：JSON 顶层应包含 'sources' 列表")
             sys.exit(1)
 
@@ -49,13 +49,14 @@ class ParaDistro:
 
         try:
             self.pub_socket.bind(self.endpoint)
-            print(f"已绑定到 {self.endpoint}，准备发送 {len(sources)} 条消息...")
+            print(f"已绑定到 {self.endpoint}")
         except zmq.ZMQError as e:
             print(f"ZMQ 绑定失败：{e}")
             sys.exit(1)
 
     def send_parameters(self, inter_level = 1):
-        pub_temp = {"boardcast":self.source_mapping["Boardcast"],"inter":self.source_mapping[f"Inter_LV{inter_level}"]}
+        pub_temp = {"boardcast":self.sources[self.source_mapping["Boardcast"]],
+                    "inter":self.sources[self.source_mapping[f"Inter_LV{inter_level}"]]}
         message = json.dumps(pub_temp, ensure_ascii=False)
         self.pub_socket.send_string(message)
         print(f"已发送")
@@ -70,9 +71,11 @@ class ParaDistro:
             self._lock = threading.Lock()
             self.inter_level = inter_level
             self.thread = threading.Thread(target=self.run)
+            self.stop_event = threading.Event()
             self.thread.daemon = True
         
         def start(self):
+            self.running = True
             self.thread.start()
 
         def update_inter_level(self, new_level):
@@ -80,12 +83,13 @@ class ParaDistro:
                 self.inter_level = new_level
 
         def run(self):
-            while True:
+            while not self.stop_event.is_set():
                 with self._lock:
                     self.parent.send_parameters(self.inter_level)
                 time.sleep(self.parent.delay)
         
         def stop(self):
+            self.stop_event.set()
             self.thread.join()
 
 if __name__ == "__main__":
@@ -98,7 +102,7 @@ if __name__ == "__main__":
     args = parser.parse_args()"""
     paradistro = ParaDistro(team = "blue", json_file="./RF_para.json",endpoint="tcp://127.0.0.1:5555")
     autorunner = paradistro.Auto_Distributor(paradistro, inter_level=1)
-    autorunner.start
+    autorunner.start()
     time.sleep(5)
     autorunner.update_inter_level(2)
     time.sleep(5)

@@ -25,6 +25,7 @@ from PyQt5 import Qt
 from argparse import ArgumentParser
 from gnuradio.eng_arg import eng_float, intx
 from gnuradio import eng_notation
+import file_in_test_epy_block_0 as epy_block_0  # embedded python block
 import sip
 import threading
 
@@ -70,13 +71,12 @@ class file_in_test(gr.top_block, Qt.QWidget):
         self.samp_rate = samp_rate = 1e6
         self.bw = bw = 0.820e6
         self.symb_rate = symb_rate = samp_rate/sps
-        self.ook = ook = digital.constellation_calcdist([0,1], [0, 1],
-        1, 1, digital.constellation.POWER_NORMALIZATION).base()
-        self.ook.set_npwr(1.0)
         self.inter_header = inter_header = digital.header_format_default("0001011011101000110100110111011100010101000111000111000100101101",0, 1)
+        self.cent_freq = cent_freq = 433.2e6
         self.bfsk = bfsk = digital.constellation_calcdist([-1,1], [0, 1],
         1, 1, digital.constellation.AMPLITUDE_NORMALIZATION).base()
         self.bfsk.set_npwr(1.0)
+        self.access_code = access_code = "0001011011101000110100110111011100010101000111000111000100101101"
         self.D = D = bw/2
 
         ##################################################
@@ -138,6 +138,7 @@ class file_in_test(gr.top_block, Qt.QWidget):
         self.top_layout.addWidget(self._qtgui_time_sink_x_2_0_1_win)
         self.fir_filter_xxx_0_0 = filter.fir_filter_fff(1, firdes.gaussian(1.2, sps, 0.35, 60))
         self.fir_filter_xxx_0_0.declare_sample_delay(0)
+        self.epy_block_0 = epy_block_0.blk(endpoint='tcp://127.0.0.1:5555', bind=False, rx_type='inter')
         self.digital_symbol_sync_xx_0 = digital.symbol_sync_ff(
             digital.TED_MOD_MUELLER_AND_MULLER,
             sps,
@@ -150,11 +151,14 @@ class file_in_test(gr.top_block, Qt.QWidget):
             digital.IR_PFB_NO_MF,
             32,
             [])
-        self.digital_correlate_access_code_xx_ts_0 = digital.correlate_access_code_bb_ts('1011011101000110100110111011100010101000111000111000100101101',
+        self.digital_correlate_access_code_xx_ts_0 = digital.correlate_access_code_bb_ts(access_code,
           3, 'pack_len')
         self.digital_binary_slicer_fb_0 = digital.binary_slicer_fb()
         self.blocks_throttle2_0 = blocks.throttle( gr.sizeof_gr_complex*1, (samp_rate*2), True, 0 if "auto" == "auto" else max( int(float(0.1) * (samp_rate*2)) if "auto" == "time" else int(0.1), 1) )
         self.blocks_pack_k_bits_bb_0 = blocks.pack_k_bits_bb(8)
+        self.blocks_msgpair_to_var_1_0 = blocks.msg_pair_to_var(self.set_access_code)
+        self.blocks_msgpair_to_var_1 = blocks.msg_pair_to_var(self.set_bw)
+        self.blocks_msgpair_to_var_0 = blocks.msg_pair_to_var(self.set_cent_freq)
         self.blocks_file_source_0 = blocks.file_source(gr.sizeof_gr_complex*1, '/home/shuyusihan/下载/RX_BLUE_ganrao_1', False, 0, 0)
         self.blocks_file_source_0.set_begin_tag(pmt.PMT_NIL)
         self.blocks_file_sink_0 = blocks.file_sink(gr.sizeof_char*1, '/home/shuyusihan/test_decode.txt', False)
@@ -167,6 +171,9 @@ class file_in_test(gr.top_block, Qt.QWidget):
         ##################################################
         # Connections
         ##################################################
+        self.msg_connect((self.epy_block_0, 'freq'), (self.blocks_msgpair_to_var_0, 'inpair'))
+        self.msg_connect((self.epy_block_0, 'bw'), (self.blocks_msgpair_to_var_1, 'inpair'))
+        self.msg_connect((self.epy_block_0, 'access_code'), (self.blocks_msgpair_to_var_1_0, 'inpair'))
         self.connect((self.analog_agc_xx_0, 0), (self.rational_resampler_xxx_0, 0))
         self.connect((self.analog_agc_xx_1, 0), (self.digital_symbol_sync_xx_0, 0))
         self.connect((self.analog_quadrature_demod_cf_0_0_0, 0), (self.fir_filter_xxx_0_0, 0))
@@ -221,23 +228,29 @@ class file_in_test(gr.top_block, Qt.QWidget):
     def set_symb_rate(self, symb_rate):
         self.symb_rate = symb_rate
 
-    def get_ook(self):
-        return self.ook
-
-    def set_ook(self, ook):
-        self.ook = ook
-
     def get_inter_header(self):
         return self.inter_header
 
     def set_inter_header(self, inter_header):
         self.inter_header = inter_header
 
+    def get_cent_freq(self):
+        return self.cent_freq
+
+    def set_cent_freq(self, cent_freq):
+        self.cent_freq = cent_freq
+
     def get_bfsk(self):
         return self.bfsk
 
     def set_bfsk(self, bfsk):
         self.bfsk = bfsk
+
+    def get_access_code(self):
+        return self.access_code
+
+    def set_access_code(self, access_code):
+        self.access_code = access_code
 
     def get_D(self):
         return self.D

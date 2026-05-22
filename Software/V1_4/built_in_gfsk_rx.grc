@@ -37,12 +37,26 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: bw/2
+    value: bw/2-samp_rate/sps
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
     coordinate: [376, 8.0]
+    rotation: 0
+    state: enabled
+- name: access_code
+  id: variable_header_format_default
+  parameters:
+    access_code: '"0001011011101000110100110111011100010101000111000111000100101101"'
+    bps: '1'
+    comment: ''
+    threshold: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [504, 128.0]
     rotation: 0
     state: enabled
 - name: bfsk
@@ -57,12 +71,12 @@ blocks:
     rot_sym: '1'
     soft_dec_lut: None
     sym_map: '[0, 1]'
-    type: bpsk
+    type: calcdist
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [984, 72.0]
+    coordinate: [1296, 28.0]
     rotation: 0
     state: enabled
 - name: bw
@@ -198,7 +212,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [752, 120.0]
+    coordinate: [1112, 184.0]
     rotation: 0
     state: enabled
 - name: blocks_msgpair_to_var_1
@@ -207,12 +221,12 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    target: '"access_code"'
+    target: '"bw"'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [744, 176.0]
+    coordinate: [1112, 120.0]
     rotation: 0
     state: enabled
 - name: blocks_msgpair_to_var_1_0
@@ -226,7 +240,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [704, 248.0]
+    coordinate: [1112, 56.0]
     rotation: 0
     state: enabled
 - name: blocks_pack_k_bits_bb_0
@@ -410,7 +424,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [432, 136.0]
+    coordinate: [688, 64.0]
     rotation: 0
     state: enabled
 - name: import_0
@@ -539,6 +553,9 @@ connections:
 - [digital_correlate_access_code_xx_ts_0, '0', blocks_pack_k_bits_bb_0, '0']
 - [digital_gfsk_demod_0, '0', digital_correlate_access_code_xx_ts_0, '0']
 - [digital_gfsk_demod_1, '0', digital_correlate_access_code_xx_ts_0, '0']
+- [epy_block_0, access_code, blocks_msgpair_to_var_1_0, inpair]
+- [epy_block_0, bw, blocks_msgpair_to_var_1, inpair]
+- [epy_block_0, freq, blocks_msgpair_to_var_0, inpair]
 - [rational_resampler_xxx_0, '0', digital_gfsk_demod_0, '0']
 - [rational_resampler_xxx_0, '0', digital_gfsk_demod_1, '0']
 - [rational_resampler_xxx_0, '0', qtgui_waterfall_sink_x_0, '0']
