@@ -1,7 +1,9 @@
 {
   "sources": [
     {
-      "wave_source": "红方广播源",
+      "team":"red",
+      "wave_source": "RED_BOARDCAST",
+      "level": 1,
       "center_freq": 433.2e6,
       "bandwidth": 0.54e6,
       "power_dbm": -60,
@@ -14,7 +16,9 @@
       }
     },
     {
-      "wave_source": "红方一级干扰源",
+      "team":"red",
+      "wave_source": "RED_INTERFERENCE_LV1",
+      "level": 1,
       "center_freq": 432.2e6,
       "bandwidth": 0.94e6,
       "power_dbm": -10,
@@ -27,7 +31,9 @@
       }
     },
     {
-      "wave_source": "红方二级干扰源",
+      "team":"red",
+      "wave_source": "RED_INTERFERENCE_LV2",
+      "level": 2,
       "center_freq": 432.5e6,
       "bandwidth": 0.86e6,
       "power_dbm": -10,
@@ -40,7 +46,9 @@
       }
     },
     {
-      "wave_source": "红方三级干扰源",
+      "team":"red",
+      "wave_source": "RED_INTERFERENCE_LV3",
+      "level": 3,
       "center_freq": 432.8e6,
       "bandwidth": 0.25e6,
       "power_dbm": -10,
@@ -53,7 +61,9 @@
       }
     },
     {
-      "wave_source": "蓝方广播源",
+      "team":"blue",
+      "wave_source": "BLUE_BOARDCAST",
+      "level": 1,
       "center_freq": 433.92e6,
       "bandwidth": 0.54e6,
       "power_dbm": -60,
@@ -66,7 +76,9 @@
       }
     },
     {
-      "wave_source": "蓝方一级干扰源",
+      "team":"blue",
+      "wave_source": "BLUE_INTERFERENCE_LV1",
+      "level": 1,
       "center_freq": 434.92e6,
       "bandwidth": 0.94e6,
       "power_dbm": -10,
@@ -79,7 +91,9 @@
       }
     },
     {
-      "wave_source": "蓝方二级干扰源",
+      "team":"blue",
+      "wave_source": "BLUE_INTERFERENCE_LV2",
+      "level": 2,
       "center_freq": 434.62e6,
       "bandwidth": 0.86e6,
       "power_dbm": -10,
@@ -92,7 +106,9 @@
       }
     },
     {
-      "wave_source": "蓝方三级干扰源",
+      "team":"blue",
+      "wave_source": "BLUE_INTERFERENCE_LV3",
+      "level": 3,
       "center_freq": 434.32e6,
       "bandwidth": 0.25e6,
       "power_dbm": -10,

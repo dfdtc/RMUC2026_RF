@@ -1,0 +1,997 @@
+options:
+  parameters:
+    author: dfdtc
+    catch_exceptions: 'True'
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: dfdtc
+    description: ''
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: unify_source_demod
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: unify_source_demod
+    window_size: (1000,1000)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 8]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: D
+  id: variable
+  parameters:
+    comment: ''
+    value: bw/2-samp_rate/sps
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [376, 8.0]
+    rotation: 0
+    state: enabled
+- name: access_code
+  id: variable
+  parameters:
+    comment: ''
+    value: '"0001011011101000110100110111011100010101000111000111000100101101"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1096, 8.0]
+    rotation: 0
+    state: enabled
+- name: bfsk
+  id: variable_constellation
+  parameters:
+    comment: ''
+    const_points: '[-1,1]'
+    dims: '1'
+    normalization: digital.constellation.AMPLITUDE_NORMALIZATION
+    npwr: '1.0'
+    precision: '8'
+    rot_sym: '1'
+    soft_dec_lut: None
+    sym_map: '[0, 1]'
+    type: calcdist
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1280, 12.0]
+    rotation: 0
+    state: enabled
+- name: boardcast_LPF
+  id: variable_low_pass_filter_taps
+  parameters:
+    beta: '40'
+    comment: ''
+    cutoff_freq: 535e3/2
+    gain: '1.0'
+    samp_rate: 2e6
+    value: ''
+    width: 5e3
+    win: window.WIN_BLACKMAN
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1280, 192.0]
+    rotation: 0
+    state: enabled
+- name: boardcast_bw
+  id: variable
+  parameters:
+    comment: ''
+    value: 267.5e3
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1176, 160.0]
+    rotation: 0
+    state: enabled
+- name: boardcast_delta
+  id: variable
+  parameters:
+    comment: ''
+    value: 432.7e6-433.2e6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [544, 192.0]
+    rotation: 0
+    state: enabled
+- name: bw
+  id: variable
+  parameters:
+    comment: ''
+    value: 6e6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1096, 88.0]
+    rotation: 0
+    state: enabled
+- name: cent_freq
+  id: variable
+  parameters:
+    comment: ''
+    value: 433.2e6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1184, 88.0]
+    rotation: 0
+    state: enabled
+- name: inter1_LPF
+  id: variable_low_pass_filter_taps
+  parameters:
+    beta: '6.76'
+    comment: ''
+    cutoff_freq: 935e3/2
+    gain: '1.0'
+    samp_rate: 2e6
+    value: ''
+    width: 5e3
+    win: window.WIN_BLACKMAN
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1568, 192.0]
+    rotation: 0
+    state: enabled
+- name: inter2_LPF
+  id: variable_low_pass_filter_taps
+  parameters:
+    beta: '6.76'
+    comment: ''
+    cutoff_freq: 855e3/2
+    gain: '1.0'
+    samp_rate: 2e6
+    value: ''
+    width: 5e3
+    win: window.WIN_BLACKMAN
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1712, 192.0]
+    rotation: 0
+    state: enabled
+- name: inter3_LPF
+  id: variable_low_pass_filter_taps
+  parameters:
+    beta: '6.76'
+    comment: ''
+    cutoff_freq: 245e3/2
+    gain: '1.0'
+    samp_rate: 2e6
+    value: ''
+    width: 5e3
+    win: window.WIN_BLACKMAN
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1856, 192.0]
+    rotation: 0
+    state: enabled
+- name: inter_LPF
+  id: variable
+  parameters:
+    comment: ''
+    value: firdes.low_pass(1, samp_rate*2, 467.5e3,6e3, window=window.WIN_BLACKMAN)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1088, 232.0]
+    rotation: 0
+    state: enabled
+- name: inter_bw
+  id: variable
+  parameters:
+    comment: ''
+    value: 470e3
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1088, 160.0]
+    rotation: 0
+    state: enabled
+- name: inter_delta
+  id: variable
+  parameters:
+    comment: ''
+    value: 432.7e6-432.2e6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [544, 272.0]
+    rotation: 0
+    state: enabled
+- name: inv_ook
+  id: variable_constellation
+  parameters:
+    comment: ''
+    const_points: '[0,1]'
+    dims: '1'
+    normalization: digital.constellation.AMPLITUDE_NORMALIZATION
+    npwr: '1.0'
+    precision: '8'
+    rot_sym: '1'
+    soft_dec_lut: None
+    sym_map: '[1, 0]'
+    type: calcdist
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1760, 12.0]
+    rotation: 0
+    state: enabled
+- name: ook
+  id: variable_constellation
+  parameters:
+    comment: ''
+    const_points: '[0,1]'
+    dims: '1'
+    normalization: digital.constellation.AMPLITUDE_NORMALIZATION
+    npwr: '1.0'
+    precision: '8'
+    rot_sym: '1'
+    soft_dec_lut: None
+    sym_map: '[0, 1]'
+    type: calcdist
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1520, 12.0]
+    rotation: 0
+    state: enabled
+- name: samp_fc
+  id: variable
+  parameters:
+    comment: ''
+    value: 432.7e6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [440, 192.0]
+    rotation: 0
+    state: enabled
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: 1e6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [160, 8.0]
+    rotation: 0
+    state: enabled
+- name: sps
+  id: variable
+  parameters:
+    comment: ''
+    value: '52'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [160, 88.0]
+    rotation: 0
+    state: enabled
+- name: symb_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: samp_rate/sps
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [264, 88.0]
+    rotation: 0
+    state: enabled
+- name: analog_agc_xx_0
+  id: analog_agc_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    gain: '1.0'
+    max_gain: '4'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    rate: 1e-4
+    reference: '1.0'
+    type: complex
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [48, 296.0]
+    rotation: 0
+    state: disabled
+- name: blocks_file_sink_0
+  id: blocks_file_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    append: 'False'
+    comment: ''
+    file: ./test_decode.txt
+    type: byte
+    unbuffered: 'False'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1584, 536.0]
+    rotation: 0
+    state: enabled
+- name: blocks_file_sink_0_0
+  id: blocks_file_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    append: 'False'
+    comment: ''
+    file: ./test_decode.txt
+    type: byte
+    unbuffered: 'False'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1488, 992.0]
+    rotation: 0
+    state: enabled
+- name: blocks_file_source_0
+  id: blocks_file_source
+  parameters:
+    affinity: ''
+    alias: ''
+    begin_tag: pmt.PMT_NIL
+    comment: ''
+    file: "/home/shuyusihan/\u4E0B\u8F7D/RX_BLUE_ganrao_1"
+    length: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    offset: '0'
+    repeat: 'False'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [32, 168.0]
+    rotation: 0
+    state: disabled
+- name: blocks_freqshift_cc_0
+  id: blocks_freqshift_cc
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    freq: boardcast_delta
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    sample_rate: 2e6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [496, 528.0]
+    rotation: 0
+    state: enabled
+- name: blocks_freqshift_cc_1
+  id: blocks_freqshift_cc
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    freq: inter_delta
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    sample_rate: 2e6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [504, 712.0]
+    rotation: 0
+    state: enabled
+- name: blocks_msgpair_to_var_0
+  id: blocks_msgpair_to_var
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    target: '"samp_fc"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [752, 296.0]
+    rotation: 0
+    state: enabled
+- name: blocks_msgpair_to_var_1
+  id: blocks_msgpair_to_var
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    target: '"inter_bw"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [952, 88.0]
+    rotation: 0
+    state: enabled
+- name: blocks_msgpair_to_var_1_0
+  id: blocks_msgpair_to_var
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    target: '"inter_LPF"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [952, 24.0]
+    rotation: 0
+    state: enabled
+- name: blocks_msgpair_to_var_2
+  id: blocks_msgpair_to_var
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    target: '"boardcast_delta"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [872, 240.0]
+    rotation: 0
+    state: enabled
+- name: blocks_msgpair_to_var_2_0
+  id: blocks_msgpair_to_var
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    target: '"inter_delta"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [920, 160.0]
+    rotation: 0
+    state: enabled
+- name: blocks_pack_k_bits_bb_0
+  id: blocks_pack_k_bits_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    k: '8'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1392, 528.0]
+    rotation: 0
+    state: enabled
+- name: blocks_pack_k_bits_bb_0_0
+  id: blocks_pack_k_bits_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    k: '8'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1384, 912.0]
+    rotation: 0
+    state: enabled
+- name: blocks_throttle2_0
+  id: blocks_throttle2
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    ignoretag: 'True'
+    limit: auto
+    maximum: '0.1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_second: samp_rate*2
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [264, 192.0]
+    rotation: 0
+    state: disabled
+- name: digital_correlate_access_code_xx_ts_0
+  id: digital_correlate_access_code_xx_ts
+  parameters:
+    access_code: '"0001011011101000110100110111011100010101000111000111000100101101"'
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    tagname: pack_len
+    threshold: '3'
+    type: byte
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1104, 936.0]
+    rotation: 0
+    state: enabled
+- name: digital_correlate_access_code_xx_ts_0_0
+  id: digital_correlate_access_code_xx_ts
+  parameters:
+    access_code: '"0010111101101111010011000111010010111001000101000100100100101110"'
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    tagname: pack_len
+    threshold: '3'
+    type: byte
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1176, 624.0]
+    rotation: 0
+    state: enabled
+- name: digital_gfsk_demod_0
+  id: digital_gfsk_demod
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    freq_error: '0.0'
+    gain_mu: '0.175'
+    log: 'False'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    mu: '0.5'
+    omega_relative_limit: '0.005'
+    samples_per_symbol: '2'
+    sensitivity: samp_rate/(2*math.pi*boardcast_bw)
+    verbose: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [968, 496.0]
+    rotation: 0
+    state: enabled
+- name: digital_gfsk_demod_0_0
+  id: digital_gfsk_demod
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    freq_error: '0.0'
+    gain_mu: '0.175'
+    log: 'False'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    mu: '0.5'
+    omega_relative_limit: '0.005'
+    samples_per_symbol: '2'
+    sensitivity: samp_rate/(2*math.pi*inter_bw)
+    verbose: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [968, 680.0]
+    rotation: 0
+    state: enabled
+- name: epy_block_0
+  id: epy_block
+  parameters:
+    _source_code: "\"\"\"\nEmbedded Python Block: ZMQ PULL + JSON \u89E3\u6790\n-\
+      \ \u5185\u90E8\u521B\u5EFA ZMQ PULL socket\uFF0C\u63A5\u6536 JSON \u6D88\u606F\
+      \n\"\"\"\n\nimport json\nimport threading\nimport zmq\nfrom gnuradio import\
+      \ gr\nimport pmt\nimport time\nfrom gnuradio.filter import firdes, window\n\
+      BLUE_FC = 434.42e6\nRED_FC  = 432.7e6 \n\nclass blk(gr.sync_block):\n    def\
+      \ __init__(self,samp_rate = 2e6, endpoint=\"tcp://127.0.0.1:5555\", bind=False):\n\
+      \        gr.sync_block.__init__(\n            self,\n            name='ZMQ JSON\
+      \ Pull Parser (int freq/bw + access_code)',\n            in_sig=None,\n    \
+      \        out_sig=None\n        )\n        self.samp_fc = RED_FC\n        self.samp_rate\
+      \ = samp_rate\n        self.endpoint = endpoint\n        self.bind = bind\n\
+      \        self.running = False\n        self.thread = None\n\n        self.inter1_LPF\
+      \ = firdes.low_pass(1, samp_rate*2, 467.5e3,6e3, window=window.WIN_BLACKMAN)\n\
+      \        self.inter2_LPF = firdes.low_pass(1, samp_rate*2, 467.5e3,6e3, window=window.WIN_BLACKMAN)\n\
+      \        self.inter3_LPF = firdes.low_pass(1, samp_rate*2, 467.5e3,6e3, window=window.WIN_BLACKMAN)\n\
+      \        self.current_inter_LPF = self.inter1_LPF\n\n        # \u6CE8\u518C\u8F93\
+      \u51FA\u7AEF\u53E3\n        self.message_port_register_out(pmt.intern('samp_fc'))\
+      \ #int\n        self.message_port_register_out(pmt.intern('boardcast_delta_freq'))\
+      \ #int\n        self.message_port_register_out(pmt.intern('inter_delta_freq'))\
+      \     # int\n        self.message_port_register_out(pmt.intern('inter_bw'))\
+      \             # int\n        self.message_port_register_out(pmt.intern('inter_LPF'))\
+      \           # taps\n\n        # \u542F\u52A8\u63A5\u6536\u7EBF\u7A0B\n     \
+      \   self.start_receiver()\n\n    def start_receiver(self):\n        self.running\
+      \ = True\n        self.thread = threading.Thread(target=self.receiver_loop)\n\
+      \        self.thread.daemon = True\n        self.thread.start()\n\n    def receiver_loop(self):\n\
+      \        context = zmq.Context()\n        socket = context.socket(zmq.SUB)\n\
+      \n        socket.setsockopt(zmq.CONFLATE, 1)      # \u53EA\u4FDD\u7559\u6700\
+      \u65B0\u547D\u4EE4\n        socket.setsockopt(zmq.SUBSCRIBE, b\"\")    # \u8BA2\
+      \u9605\u6240\u6709\u4E3B\u9898\n        socket.setsockopt(zmq.RCVTIMEO, 10000)\
+      \   # 30\u79D2\u63A5\u6536\u8D85\u65F6\uFF0C\u9632\u6B62\u65E0\u9650\u671F\u963B\
+      \u585E\n        if self.bind:\n            socket.bind(self.endpoint)\n    \
+      \        print(f\"[ZMQ] Binding PULL to {self.endpoint}\")\n        else:\n\
+      \            socket.connect(self.endpoint)\n            print(f\"[ZMQ] Connecting\
+      \ PULL to {self.endpoint}\")\n\n        while self.running:\n            try:\n\
+      \                msg_bytes = socket.recv()\n                self.process_message(msg_bytes)\n\
+      \            except zmq.Again:\n                print(\"[ZMQ] Receive timeout,\
+      \ no message received\")\n                continue    \n            except zmq.ZMQError\
+      \ as e:\n                print(f\"[ZMQ] Error: {e}\")\n                break\n\
+      \            except Exception as e:\n                print(f\"[ZMQ] Unexpected\
+      \ error: {e}\")\n                break\n\n        socket.close()\n        context.term()\n\
+      \        print(\"[ZMQ] Receiver thread stopped\")\n        if self.delay > 0:\n\
+      \            time.sleep(self.delay)\n\n    def process_message(self, msg_bytes):\n\
+      \        try:\n            s = msg_bytes.decode('utf-8')\n            data =\
+      \ json.loads(s)\n        except Exception as e:\n            print(f\"[Parser]\
+      \ JSON decode error: {e}\")\n            return\n        \n        data_boardcast\
+      \ = data[\"boardcast\"]\n        data_inter = data[\"inter\"]\n\n        self.team\
+      \ = data_boardcast[\"team\"]\n        if self.team == \"red\":\n           \
+      \ self.samp_fc = RED_FC\n        elif self.team == \"blue\":\n            self.samp_fc\
+      \ = BLUE_FC\n\n        boardcast_delta = self.samp_fc - data_boardcast.get(\"\
+      center_freq\")\n        \n        inter_level = data_inter[\"level\"]\n    \
+      \    if inter_level == 1:\n            self.current_inter_LPF = self.inter1_LPF\n\
+      \        elif inter_level == 2:\n            self.current_inter_LPF = self.inter2_LPF\n\
+      \        elif inter_level == 3:\n            self.current_inter_LPF = self.inter3_LPF\n\
+      \n        inter_delta = self.samp_fc - data_inter.get(\"center_freq\")\n   \
+      \     inter_bw = data_inter.get(\"bandwidth\")\n\n        # \u63D0\u53D6\u5B57\
+      \u6BB5\uFF0C\u7F3A\u5931\u65F6\u4F7F\u7528\u9ED8\u8BA4\u503C\u5E76\u62A5\u8B66\
+      \n\n        if boardcast_delta is None or inter_delta is None or inter_bw is\
+      \ None:\n            missing = []\n            if boardcast_delta is None: missing.append('boardcast_delta')\n\
+      \            if inter_delta is None: missing.append('inter_delta')\n       \
+      \     if inter_bw is None: missing.append('inter_bw')\n            print(f\"\
+      [Parser] Missing keys: {missing} in {data.keys()}\")\n            return\n\n\
+      \        # \u8F6C\u6362\u4E3A int (\u622A\u65AD\u5C0F\u6570)\n        boardcast_delta_int\
+      \ = int(boardcast_delta)\n        inter_delta_int = int(inter_delta)\n     \
+      \   inter_bw_int = int(inter_bw)\n\n        # \u53D1\u9001\u6D88\u606F\n   \
+      \     self.message_port_pub(pmt.intern('samp_fc'), \n                      \
+      \        pmt.cons(pmt.intern('samp_fc'), pmt.from_long(self.samp_fc)))\n   \
+      \     self.message_port_pub(pmt.intern('boardcast_delta'), \n              \
+      \                pmt.cons(pmt.intern('boardcast_delta'), pmt.from_long(boardcast_delta_int)))\n\
+      \        self.message_port_pub(pmt.intern('interface_delta'), \n           \
+      \                   pmt.cons(pmt.intern('interface_delta'), pmt.from_long(inter_delta_int)))\n\
+      \        self.message_port_pub(pmt.intern('inter_bw'), \n                  \
+      \            pmt.cons(pmt.intern('inter_bw'), pmt.from_long(inter_bw_int)))\n\
+      \        self.message_port_pub(pmt.intern('inter_LPF'), \n                 \
+      \             pmt.cons(pmt.intern('inter_LPF'), pmt.cons(pmt.intern(\"inter_LPF\"\
+      ), pmt.init_f32vector(len(self.current_inter_LPF), self.current_inter_LPF))))\n\
+      \        print(\"--------------------------------\")\n        print(f\"[Parser]\
+      \ Current team: {self.team},\")\n        print(f\"samp_fc: {self.samp_fc/1e6}\
+      \ MHz,\") \n        print(f\"boardcast_delta: {boardcast_delta_int} Hz,\")\n\
+      \        print(f\"inter_delta: {inter_delta_int} Hz,\")\n        print(f\"inter_bw:\
+      \ {inter_bw_int} Hz\")\n        print(\"--------------------------------\")\n\
+      \    def stop(self):\n        self.running = False\n        if self.thread and\
+      \ self.thread.is_alive():\n            self.thread.join(timeout=2.0)\n\n   \
+      \ def __del__(self):\n        self.stop()"
+    affinity: ''
+    alias: ''
+    bind: 'False'
+    comment: ''
+    endpoint: '''tcp://127.0.0.1:5555'''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: 2e6
+  states:
+    _io_cache: ('ZMQ JSON Pull Parser (int freq/bw + access_code)', 'blk', [('samp_rate',
+      '2000000.0'), ('endpoint', "'tcp://127.0.0.1:5555'"), ('bind', 'False')], [],
+      [('inter_LPF', 'message', 1), ('inter_bw', 'message', 1), ('inter_delta_freq',
+      'message', 1), ('boardcast_delta_freq', 'message', 1), ('samp_fc', 'message',
+      1)], '', ['bind', 'endpoint', 'samp_rate'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [488, 8.0]
+    rotation: 0
+    state: enabled
+- name: fft_filter_xxx_0
+  id: fft_filter_xxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    decim: '2'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    nthreads: '1'
+    samp_delay: '0'
+    taps: boardcast_LPF
+    type: ccc
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [680, 520.0]
+    rotation: 0
+    state: enabled
+- name: fft_filter_xxx_1
+  id: fft_filter_xxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    decim: '2'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    nthreads: '1'
+    samp_delay: '0'
+    taps: inter_LPF
+    type: ccc
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [680, 704.0]
+    rotation: 0
+    state: enabled
+- name: iio_pluto_source_0
+  id: iio_pluto_source
+  parameters:
+    affinity: ''
+    alias: ''
+    bandwidth: int(2e6)
+    bbdc: 'True'
+    buffer_size: '32768'
+    comment: ''
+    filter: ''
+    filter_source: '''Auto'''
+    fpass: '0'
+    frequency: int(samp_fc)
+    fstop: '0'
+    gain1: '''hybrid'''
+    len_tag_key: packet_len
+    manual_gain1: '64'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    quadrature: 'True'
+    rfdc: 'True'
+    samplerate: int(2e6)
+    type: fc32
+    uri: '"ip:192.168.2.1"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [152, 548.0]
+    rotation: 0
+    state: enabled
+- name: import_0
+  id: import
+  parameters:
+    alias: ''
+    comment: ''
+    imports: import math
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [264, 16.0]
+    rotation: 0
+    state: enabled
+- name: import_1
+  id: import
+  parameters:
+    alias: ''
+    comment: ''
+    imports: from gnuradio import fft
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [384, 88.0]
+    rotation: 0
+    state: enabled
+- name: qtgui_waterfall_sink_x_0
+  id: qtgui_waterfall_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    axislabels: 'True'
+    bw: samp_rate
+    color1: '0'
+    color10: '0'
+    color2: '0'
+    color3: '0'
+    color4: '0'
+    color5: '0'
+    color6: '0'
+    color7: '0'
+    color8: '0'
+    color9: '0'
+    comment: ''
+    fc: '0'
+    fftsize: '1024'
+    freqhalf: 'True'
+    grid: 'False'
+    gui_hint: ''
+    int_max: '10'
+    int_min: '-140'
+    label1: ''
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    legend: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: '""'
+    nconnections: '1'
+    showports: 'False'
+    type: complex
+    update_time: '0.10'
+    wintype: window.WIN_BLACKMAN_hARRIS
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [224, 408.0]
+    rotation: 0
+    state: disabled
+- name: rational_resampler_xxx_0
+  id: rational_resampler_xxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    decim: '2'
+    fbw: '0'
+    interp: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    taps: '[]'
+    type: ccc
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [256, 296.0]
+    rotation: 0
+    state: disabled
+- name: zeromq_pub_sink_0
+  id: zeromq_pub_sink
+  parameters:
+    address: '"tcp://127.0.0.1:5559"'
+    affinity: ''
+    alias: ''
+    bind: 'True'
+    comment: ''
+    drop_on_hwm: 'True'
+    hwm: '4096'
+    key: ''
+    pass_tags: 'False'
+    timeout: '100'
+    type: byte
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1600, 368.0]
+    rotation: 0
+    state: enabled
+- name: zeromq_pub_sink_0_0
+  id: zeromq_pub_sink
+  parameters:
+    address: '"tcp://127.0.0.1:5559"'
+    affinity: ''
+    alias: ''
+    bind: 'True'
+    comment: ''
+    drop_on_hwm: 'True'
+    hwm: '4096'
+    key: ''
+    pass_tags: 'False'
+    timeout: '100'
+    type: byte
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1384, 736.0]
+    rotation: 0
+    state: enabled
+
+connections:
+- [analog_agc_xx_0, '0', rational_resampler_xxx_0, '0']
+- [blocks_file_source_0, '0', blocks_throttle2_0, '0']
+- [blocks_freqshift_cc_0, '0', fft_filter_xxx_0, '0']
+- [blocks_freqshift_cc_1, '0', fft_filter_xxx_1, '0']
+- [blocks_pack_k_bits_bb_0, '0', blocks_file_sink_0, '0']
+- [blocks_pack_k_bits_bb_0, '0', zeromq_pub_sink_0, '0']
+- [blocks_pack_k_bits_bb_0_0, '0', blocks_file_sink_0_0, '0']
+- [blocks_pack_k_bits_bb_0_0, '0', zeromq_pub_sink_0_0, '0']
+- [blocks_throttle2_0, '0', analog_agc_xx_0, '0']
+- [digital_correlate_access_code_xx_ts_0, '0', blocks_pack_k_bits_bb_0_0, '0']
+- [digital_correlate_access_code_xx_ts_0_0, '0', blocks_pack_k_bits_bb_0, '0']
+- [digital_gfsk_demod_0, '0', digital_correlate_access_code_xx_ts_0_0, '0']
+- [digital_gfsk_demod_0_0, '0', digital_correlate_access_code_xx_ts_0, '0']
+- [epy_block_0, boardcast_delta_freq, blocks_msgpair_to_var_2, inpair]
+- [epy_block_0, inter_LPF, blocks_msgpair_to_var_1_0, inpair]
+- [epy_block_0, inter_bw, blocks_msgpair_to_var_1, inpair]
+- [epy_block_0, inter_delta_freq, blocks_msgpair_to_var_2_0, inpair]
+- [epy_block_0, samp_fc, blocks_msgpair_to_var_0, inpair]
+- [fft_filter_xxx_0, '0', digital_gfsk_demod_0, '0']
+- [fft_filter_xxx_1, '0', digital_gfsk_demod_0_0, '0']
+- [iio_pluto_source_0, '0', blocks_freqshift_cc_0, '0']
+- [iio_pluto_source_0, '0', blocks_freqshift_cc_1, '0']
+
+metadata:
+  file_format: 1
+  grc_version: 3.10.12.0

@@ -81,6 +81,20 @@ blocks:
     coordinate: [664, 112.0]
     rotation: 0
     state: enabled
+- name: rmuc_boardcast_format
+  id: variable_header_format_default
+  parameters:
+    access_code: '"0010111101101111010011000111010010111001000101000100100100101110"'
+    bps: '1'
+    comment: ''
+    threshold: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 240.0]
+    rotation: 0
+    state: enabled
 - name: rmuc_inter_format
   id: variable_header_format_default
   parameters:
@@ -93,20 +107,6 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [8, 136.0]
-    rotation: 0
-    state: enabled
-- name: rmuc_inter_format_0
-  id: variable_header_format_default
-  parameters:
-    access_code: '"0010111101101111010011000111010010111001000101000100100100101110"'
-    bps: '1'
-    comment: ''
-    threshold: '4'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [8, 240.0]
     rotation: 0
     state: enabled
 - name: samp_rate

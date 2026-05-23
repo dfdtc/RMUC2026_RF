@@ -1,0 +1,81 @@
+options:
+  parameters:
+    author: dfdtc
+    catch_exceptions: 'True'
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: dfdtc
+    description: ''
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: sic
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: sic
+    window_size: (1000,1000)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 8]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: 1e6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [200, 12]
+    rotation: 0
+    state: enabled
+- name: epy_block_0
+  id: epy_block
+  parameters:
+    _source_code: "\nimport numpy as np\nfrom gnuradio import gr\n\nclass blk(gr.sync_block):\n\
+      \    def __init__(self, threshold=0.0): # \u9ED8\u8BA4\u4E3A0\u7684ReLU\n  \
+      \      self.threshold = threshold\n        gr.sync_block.__init__(\n       \
+      \     self,\n            name='Threshold ReLU (x if x > threshold else 0)',\n\
+      \            in_sig=[np.float32],\n            out_sig=[np.float32]\n      \
+      \  )\n\n    def work(self, input_items, output_items):\n        in0 = input_items[0]\n\
+      \        out = output_items[0]\n        # \u6838\u5FC3\u903B\u8F91\uFF1A\u521B\
+      \u5EFA\u4E00\u4E2A\u63A9\u7801\uFF0C\u7136\u540E\u8FDB\u884C\u9009\u62E9\n \
+      \       # mask \u4E2D\uFF0C\u6EE1\u8DB3\u6761\u4EF6\u7684\u4E3ATrue(1)\uFF0C\
+      \u4E0D\u6EE1\u8DB3\u7684\u4E3AFalse(0)\n        mask = (in0 > self.threshold)\n\
+      \        out[:] = in0 * mask\n        return len(output_items[0])"
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    threshold: ''
+  states:
+    _io_cache: ('Threshold ReLU (x if x > threshold else 0)', 'blk', [('threshold',
+      '0.0')], [('0', 'float', 1)], [('0', 'float', 1)], '', ['threshold'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [600, 248.0]
+    rotation: 0
+    state: enabled
+connections: []
+
+metadata:
+  file_format: 1
+  grc_version: 3.10.12.0
