@@ -1,0 +1,9 @@
+adi.trash==0.6
+crc==7.1.0
+matplotlib==3.10.9
+numpy==2.4.6
+pmt==0.0.4
+PyQt5==5.15.11
+pyqt5_sip==12.17.1
+scipy==1.17.1
+sip==6.15.3
