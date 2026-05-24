@@ -116,7 +116,7 @@ class StreamFrameDecoder:
                 # 尝试暴力修复
                 fixed = self.crc_helper.bf_header_fixing(data_len, header_list, header_crc8)
                 if fixed is None:
-                    # 无法修复，跳过这个 0xA5
+                    # 无法修复，跳过这个帧
                     pos += 1
                     continue
                 else:
@@ -124,7 +124,7 @@ class StreamFrameDecoder:
                     header_list = fixed
                     # 重新提取数据长度（修复后可能改变）
                     data_len = header_list[1] + (header_list[2] << 8)
-                    # 原代码中修复后若长度>64则视为失败，此处同理
+                    # 雷达数据链路不包含超过64b的帧，修复后若长度>64则视为失败
                     if data_len > 64:
                         pos += 1
                         continue
@@ -158,8 +158,8 @@ class StreamFrameDecoder:
             consumed = frame_end - pos
             return cmd, data, consumed
 
-        # 没有找到有效帧起始（可能缓冲区全是无效数据），清空缓冲区？这里保守处理，仅返回 None
-        # 实际应用中可考虑丢弃一定量的无效数据，但为安全暂不清空。
+        # 没有找到有效帧起始，清空缓冲区
+        self.buffer.clear()
         return None
 
 
