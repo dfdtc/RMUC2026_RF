@@ -42,7 +42,7 @@ class Frame_decoder:
 
 
 # ---------------------------- 输出包装函数（便于后续替换） ----------------------------
-def output_result(cmd:int, data: bytes):
+def output_result(cmd:int, data: bytes, invert: bool = False):
     """
     输出解析结果，目前仅打印。
     后续可扩展为存储、转发、显示等。
@@ -53,6 +53,11 @@ def output_result(cmd:int, data: bytes):
         print(f"[OUT] {text}")
     except Exception:
         print(f"[OUT] {data.hex()}")
+    
+    if invert:             # 组委会疑似抽风，上传密钥时需要翻转字节顺序，因此这里提供一个选项来翻转输出数据的字节顺序以便对接（可根据需要启用）
+        data = data[::-1]  # 反转字节顺序
+
+    # Your code here to handle the output data (e.g., store, forward, display) can be added here.
 
 
 # ---------------------------- 流式解析器（复用原 CRC 逻辑） ----------------------------
