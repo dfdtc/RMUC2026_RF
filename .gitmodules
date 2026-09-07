@@ -1,0 +1,3 @@
+[submodule "Hardware/CC1201_board"]
+	path = Hardware/CC1201_board
+	url = https://github.com/dfdtc/CC1201.git
